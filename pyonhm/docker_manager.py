@@ -78,10 +78,10 @@ class DockerManager:
             return False
         
         # Retrieve the GitHub token from an environment variable
-        github_token = os.getenv('GITHUB_TOKEN')
-        if not github_token:
-            logger.error("GITHUB_TOKEN environment variable is not set. Cannot build image.")
-            return False
+        # github_token = os.getenv('GITHUB_TOKEN')
+        # if not github_token:
+        #     logger.error("GITHUB_TOKEN environment variable is not set. Cannot build image.")
+        #     return False
         
         logger.info(f"Building Docker image: {tag} from {context_path}")
         try:
@@ -90,7 +90,7 @@ class DockerManager:
                 tag=tag,
                 rm=True,
                 nocache=no_cache,
-                buildargs={'GITHUB_TOKEN': github_token}
+                # buildargs={'GITHUB_TOKEN': github_token}
             )
             # Iterate over the response to capture all output
             for chunk in response[1]:
