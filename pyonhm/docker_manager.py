@@ -42,7 +42,7 @@ def validate_forecast(type_, value: str):
     if value not in valid_forecasts:
         raise  ValueError(f"Invalid --forecast-type: {value}. Expected one of {valid_forecasts}")
 
-def validate_method(type_, value: str):
+def validate_model(type_, value: str):
     valid_method = ["seasonal", "sub-seasonal"]
     if value not in valid_method:
         raise  ValueError(f"Invalid --method: {value}. Expected one of {valid_method}")
@@ -1008,6 +1008,88 @@ class DockerManager:
             except docker.errors.NotFound:
                 logger.info("Container already removed or not found.")
 
+    def ensure_volume_mounter_image(self):
+        """
+        Ensures that the 'volume_mounter' Docker image exists.
+        If it doesn't, this method builds a minimal image.
+        """
+        try:
+            self.client.images.get("nhmusgs/volume-mounter")
+            logger.info("Docker image 'nhmusgs/volume-mounter' already exists.")
+        except docker.errors.ImageNotFound:
+            # Build a minimal Docker image
+            try:
+                dockerfile = "FROM alpine\nCMD [\"/bin/sh\"]"
+                self.client.images.build(
+                    fileobj=BytesIO(dockerfile.encode("utf-8")),
+                    tag="nhmusgs/volume-mounter",
+                )
+                logger.info("Docker image 'nhmusgs/volume-mounter' built successfully.")
+            except docker.errors.BuildError as build_error:
+                logger.error(f"Error building Docker image: {build_error}")
+
+    def list_available_forecasts(self, env_vars: dict, forecast_type: str, model: str):
+        """
+        Lists available forecasts based on the specified method and forecast type.
+
+        Args:
+            env_vars (dict): Environment variables loaded from the env_file.
+            forecast_type (str): 'ensemble' or 'median'.
+            model (str): 'sub-seasonal' or 'seasonal'.
+
+        Returns:
+            None
+        """
+        project_root = env_vars.get("PROJECT_ROOT")
+
+        if forecast_type == "ensemble":
+            forecast_input_dir = f"{project_root}/forecast/input/ensembles"
+        elif forecast_type == "median":
+            forecast_input_dir = f"{project_root}/forecast/input/ensemble_median"
+        else:
+            logger.error(f"Invalid method '{forecast_type}'. Must be 'ensemble' or 'median'.")
+            return
+
+        # Ensure the volume_mounter image exists
+        self.ensure_volume_mounter_image()
+
+        # Attempt to remove existing container if it exists
+        try:
+            existing_container = self.client.containers.get("volume_mounter")
+            existing_container.remove(force=True)
+            logger.info("Existing container 'volume_mounter' found and removed.")
+        except docker.errors.NotFound:
+            logger.info("No existing container 'volume_mounter' to remove.")
+
+        # Create a container with the volume attached
+        container = self.client.containers.create(
+            name="volume_mounter",
+            image="nhmusgs/volume-mounter",
+            volumes={"nhm_nhm": {"bind": "/nhm", "mode": "rw"}},
+            tty=True,  # Allocate a pseudo-TTY for the container
+        )
+
+        # Command to list directories
+        command = f"ls -1 {forecast_input_dir}"
+
+        try:
+            # Start the container and execute the command
+            container.start()
+            exec_log = container.exec_run(cmd=command, stdout=True, stderr=True)
+            output = exec_log.output.decode('utf-8').strip()
+
+            if output:
+                logger.info(f"Available forecasts in '{forecast_input_dir}':\n{output}")
+                print(f"Available forecasts in '{forecast_input_dir}':\n{output}")
+            else:
+                logger.info(f"No forecasts found in '{forecast_input_dir}'.")
+                print(f"No forecasts found in '{forecast_input_dir}'.")
+        except Exception as e:
+            logger.error(f"Error listing available forecasts: {e}")
+        finally:
+            # Clean up
+            container.remove(force=True)
+            logger.info("Container 'volume_mounter' removed after listing forecasts.")
 
     def update_cfsv2(self, env_vars: dict, method: str) -> None:
         """Update the CFSv2 environment by running a Docker container.
@@ -1119,20 +1201,42 @@ def run_list_available_forecasts(
                 validator=validate_forecast
             )
         ], 
-        method:
+        model:
         Annotated[ 
             str,
             Parameter(
-                validator=validate_method
+                validator=validate_model
             )
         ]
 ):
+    """
+    Lists available forecasts based on the specified forecast type and method.
+
+    Args:
+        env_file (str): Path to the environment file.
+        forecast_type (str): 'median' or 'ensemble'.
+        method (str): 'ensemble' or 'median'.
+
+    Returns:
+        None
+    """
     docker_manager = DockerManager()
     dict_env_vars = utils.load_env_file(env_file)
+
     if docker_manager.client is not None:
-        print("Docker client initialized successfully.")
+        logger.info("Docker client initialized successfully.")
     else:
-        print("Failed to initialize Docker client.")
+        logger.error("Failed to initialize Docker client.")
+        return
+
+    try:
+        docker_manager.list_available_forecasts(
+            env_vars=dict_env_vars,
+            forecast_type=forecast_type,
+            model=model,
+        )
+    except Exception as e:
+        logger.error(f"An error occurred while listing available forecasts: {e}")
 
 @app.command(group=g_sub_seasonal)
 def run_update_cfsv2_data(*, env_file: str, method: str):
