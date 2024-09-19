@@ -738,7 +738,39 @@ class DockerManager:
                 logger.error("Failed to run container 'out2ncf'. Exiting...")
                 sys.exit(1)
 
-            
+        elif method == "ensemble":
+            for idx in range(48):  #  Loop through 48 ensembles
+                logger.info(f"Running ensemble number: {idx}")
+                med_vars = utils.get_ncf2cbh_opvars(env_vars=env_vars, mode=method, ensemble=idx)
+                success = self.run_container(
+                    image="nhmusgs/ncf2cbh", container_name="ncf2cbh", env_vars=med_vars
+                )
+                if not success:
+                    logger.error(f"Failed to run container 'ncf2cbh' for ensemble: {idx}. Exiting...")
+                    sys.exit(1)
+
+                prms_env = utils.get_forecast_ensemble_prms_run_env(
+                    env_vars=env_vars,
+                    restart_date=forecast_restart_date,
+                    n=idx)
+                success = self.run_container(
+                    image="nhmusgs/prms:5.2.1", container_name="prms", env_vars=prms_env
+                )
+                if not success:
+                    logger.error(f"Failed to run container 'prms' for ensemble: {idx}. Exiting...")
+                    sys.exit(1)
+
+                out2ncf_vars = utils.get_out2ncf_vars(env_vars=env_vars, mode="ensemble", ensemble=idx)
+                success = self.run_container(
+                    image="nhmusgs/out2ncf",
+                    container_name="out2ncf",
+                    env_vars=out2ncf_vars,
+                )
+                if not success:
+                    logger.error(f"Failed to run container 'out2ncf' for ensemble: {idx}. Exiting...")
+                    sys.exit(1)
+
+
     def operational_run(
             self,
             env_vars: dict,

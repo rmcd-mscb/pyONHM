@@ -174,7 +174,10 @@ def ncf2cbh(input_path: str, prefix: str, root_path: str, mode: str, ensemble: i
     """
     print("in ncf2cbh")
     if mode == "ensemble":
-        nc_fn = input_path + prefix + "_ensemble_" + str(ensemble) + ".nc"
+        # Add ensemble_n folder such that each ensemble is processed in a different folder named with the ensemble
+        # number suffix.
+        i_path = Path(input_path) / f"ensemble_{int(ensemble)}"
+        nc_fn = i_path / f"{prefix}_{int(ensemble)}.nc"
     elif mode == "median":
         nc_fn = input_path + prefix + "_median" + ".nc"
     elif mode == "op":
