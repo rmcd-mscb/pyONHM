@@ -105,7 +105,7 @@ def run(dir, nc_fn, nhmid_dir):
     # nhm_id = np.zeros(114958, dtype=np.int32)
     nhm_id_list = []
     ii = 0
-    nhm_id_file = f"{nhmid_dir}/nhm_id"
+    nhm_id_file = nhmid_dir / "nhm_id"
     # changing this to use count because for the upper colorado case,
     # the id's are ordered but begin at ~ 82000.  So we are assuming the data
     # are ordered.
@@ -122,7 +122,7 @@ def run(dir, nc_fn, nhmid_dir):
         v = vals[name]
         v2 = np.zeros(114958)
         nfeats = len(v[0])
-        fn2 = dir + name + ".cbh"  # _t to separate unfilled from filled cbh file
+        fn2 = Path(dir) / f"{name}.cbh"  # _t to separate unfilled from filled cbh file
         current_date = base_date
         print(f"writing {fn2}")
         with open(fn2, "w") as fp:
@@ -173,15 +173,19 @@ def ncf2cbh(input_path: str, prefix: str, root_path: str, mode: str, ensemble: i
         FileNotFoundError: If the specified nc_fn file does not exist.
     """
     print("in ncf2cbh")
+    # convert string to Path objects
+    _input_path = Path(input_path)
+    _root_path = Path(root_path)
+
     if mode == "ensemble":
         # Add ensemble_n folder such that each ensemble is processed in a different folder named with the ensemble
         # number suffix.
-        i_path = Path(input_path) / f"ensemble_{int(ensemble)}"
-        nc_fn = i_path / f"{prefix}_{int(ensemble)}.nc"
+        i_path = Path(input_path) / f"ensemble_{ensemble}"
+        nc_fn = i_path / f"{prefix}_{ensemble}.nc"
     elif mode == "median":
-        nc_fn = input_path + prefix + "_median" + ".nc"
+        nc_fn = Path(input_path) / f"{prefix}_median.nc"
     elif mode == "op":
-        nc_fn = input_path + prefix + ".nc"
+        nc_fn = Path(input_path) / f"{prefix}.nc"
     else:
         print(f"mode: {mode} not in ensemble, median, or op")
 
@@ -189,7 +193,7 @@ def ncf2cbh(input_path: str, prefix: str, root_path: str, mode: str, ensemble: i
         print(f"Error: {nc_fn} does not exist.")
         sys.exit(1)
 
-    run(input_path, nc_fn, root_path)
+    run(_input_path, nc_fn, _root_path)
 def main():
     try:
         app()

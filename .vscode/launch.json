@@ -5,6 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Python Debugger: out2ncf",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pyonhm/out2ncf/out2ncf_embedded.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--output-path",
+                "${workspaceFolder}/daily/output",
+                "--root-path",
+                "/mnt/d/oNHM/NHM_PRMS_UC_GF_1_1/"
+            ]
+        },
+        {
+            "name": "Python Debugger: out2ncf_new",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pyonhm/out2ncf/out2ncf.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--output-path",
+                "${workspaceFolder}/daily/output",
+                "--root-path",
+                "/mnt/d/oNHM/NHM_PRMS_UC_GF_1_1/"
+            ]
+        },
+        {
             "name": "Python Debugger: update-operational-restart",
             "type": "debugpy",
             "request": "launch",

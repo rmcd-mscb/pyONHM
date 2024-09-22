@@ -79,11 +79,11 @@ def read_output(csvfn):
     return nts, nfeat, base_date, end_date, vals
 
 
-def read_feature_georef(dir, name):
+def read_feature_georef(dir: Path, name: str):
     # for reasons unknown, feature_georef.*.file values are prefixed with ".//",
     # hence [2:] below
     # fn1 = (cntl["feature_georef"][name]["file"])[2:]
-    fn1 = Path(dir) / f"{name}.csv"
+    fn1 = dir / f"{name}.csv"
     # fn1 = f"{name}.csv"
 
     nfeat = sum(1 for _ in open(fn1))
@@ -163,9 +163,9 @@ def write_timeseries_last_value(vals, nc_var):
         nc_var[ii] = vals[ii]
 
 
-def write_ncf(output_path, root_path, varnames):
+def write_ncf(output_path: Path, root_path: Path, varnames: list):
     # json_file = "/nhm/NHM_PRMS_CONUS_GF_1_1/variable_info_new.json"
-    json_file = Path(root_path) / "variable_info_new.json"
+    json_file = root_path / "variable_info_new.json"
     with open(json_file, "r") as read_file:
         cntl = json.load(read_file)
 
@@ -173,7 +173,7 @@ def write_ncf(output_path, root_path, varnames):
     for var_name in varnames:
         dim_list = set()
         print(f"output path is {output_path}")
-        fpath = Path(output_path) / f"{var_name}.csv"
+        fpath = output_path / f"{var_name}.csv"
         print(f"processing {fpath}")
         dim_list.add(cntl["output_variables"][var_name]["georef"]["dimid"])
 
@@ -202,7 +202,8 @@ def write_ncf(output_path, root_path, varnames):
             seg_lon_vals = read_feature_georef(root_path, "seg_lon")
             nsegments = len(seg_lat_vals)
         # write the ncf file
-        ofn = f"{str(output_path)}/{str(end_date)}_{var_name}.nc"
+        # ofn = f"{str(output_path)}/{str(end_date)}_{var_name}.nc"
+        ofn = output_path / f"{str(end_date)}_{var_name}.nc"
 
         print(f"writing netcdf file {ofn}")
         ncf = Dataset(ofn, "w", format="NETCDF4_CLASSIC")
@@ -394,7 +395,10 @@ def out2ncf(
         "seg_shade",
         "seg_potet",
     ]
-    write_ncf(output_path, root_path, VARNAMES)
+    # Convert strings to Path objects
+    _output_path = Path(output_path)
+    _root_path = Path(root_path)
+    write_ncf(_output_path, _root_path, VARNAMES)
 
 def main():
     try:

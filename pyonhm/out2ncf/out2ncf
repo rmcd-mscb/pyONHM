@@ -14,7 +14,7 @@ echo "The output path is $OUT_WORK_PATH"
 echo "The project root path is $OUT_ROOT_PATH"
 
 /opt/conda/bin/python \
-  -u "/opt/conda/bin/out2ncf_embedded.py" \
+  -u "/opt/conda/bin/out2ncf.py" \
   "--output-path" "$OUT_WORK_PATH" \
   "--root-path" "$OUT_ROOT_PATH"
   
