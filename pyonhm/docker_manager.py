@@ -3,9 +3,11 @@ import argparse
 from io import BytesIO
 import docker
 import logging
+import logging.config
 import os
 import sys
 import subprocess
+import yaml
 from pyonhm import utils
 from docker.errors import ContainerError, ImageNotFound, APIError
 from datetime import datetime, timedelta
@@ -16,18 +18,10 @@ from typing_extensions import Annotated
 from typing import Any
 from logging.handlers import RotatingFileHandler
 
-# Configure logging with rotation
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        RotatingFileHandler('docker_manager.log', maxBytes=5*1024*1024, backupCount=5)  # 5MB per file, keep 5 backups
-    ]
-)
 
+utils.setup_logging()
 logger = logging.getLogger(__name__)
-
+logger.info("pyonhm application started")
 
 app = App(
     default_parameter=Parameter(negative=()),
@@ -36,6 +30,7 @@ g_build_load = Group.create_ordered(name="Admin Commands", help="Build images an
 g_operational = Group.create_ordered(name="Operational Commands", help="NHM daily operational model methods")
 g_sub_seasonal = Group.create_ordered(name="Sub-seasonal Forecast Commands", help="NHM sub-seasonal forecasts model methods")
 g_seasonal = Group.create_ordered(name="Seasonal Forecast Commands", help="NHM seasonal forecasts model methods")
+
 
 def validate_forecast(type_, value: str):
     valid_forecasts = ["median", "ensemble"]

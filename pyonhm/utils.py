@@ -10,9 +10,46 @@ from pathlib import Path
 from pprint import pprint
 from pprint import pformat
 import pytz
+import yaml
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
+
+def setup_logging(default_path='logging.yaml', default_level=logging.INFO, env_key='LOG_CFG'):
+    """Set up logging configuration.
+
+    This function configures the logging settings for the application by loading
+    a configuration from a YAML file specified by an environment variable. If the
+    file does not exist or an error occurs during loading, it falls back to a
+    basic logging configuration with a specified default level.
+
+    Args:
+        default_path (str): The default path to the logging configuration file.
+        default_level (int): The default logging level to use if the configuration file is not found or fails to load.
+        env_key (str): The environment variable key to retrieve the logging configuration file path.
+
+    Returns:
+        None
+
+    Raises:
+        yaml.YAMLError: If there is an error parsing the YAML configuration file.
+        Exception: For any other errors encountered while loading the logging configuration.
+    """
+    path = os.getenv(env_key, default_path)
+    if os.path.exists(path):
+        try:
+            with open(path, 'rt') as f:
+                config = yaml.safe_load(f.read())
+            logging.config.dictConfig(config)
+        except yaml.YAMLError as e:
+            logging.error(f"Error parsing YAML configuration file: {e}")
+            logging.basicConfig(level=default_level)
+        except Exception as e:
+            logging.error(f"Error loading logging configuration: {e}")
+            logging.basicConfig(level=default_level)
+    else:
+        logging.basicConfig(level=default_level)
 
 
 def adjust_date_str(date_str, days):

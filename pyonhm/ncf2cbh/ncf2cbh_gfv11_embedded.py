@@ -45,6 +45,7 @@ from netCDF4 import Dataset  # http://code.google.com/p/netcdf4-python/
 from netCDF4 import num2date
 from pathlib import Path
 import datetime
+import logging
 import os
 import sys
 import numpy as np
@@ -53,6 +54,8 @@ import csv
 from cyclopts import App, Group, Parameter, validators
 
 app = App()
+
+logger = logging.getLogger(__name__)
 
 def read(nc_fn):
     nc_fid = Dataset(nc_fn, "r")
@@ -124,7 +127,7 @@ def run(dir, nc_fn, nhmid_dir):
         nfeats = len(v[0])
         fn2 = Path(dir) / f"{name}.cbh"  # _t to separate unfilled from filled cbh file
         current_date = base_date
-        print(f"writing {fn2}")
+        logger.info(f"writing {fn2}")
         with open(fn2, "w") as fp:
             fp.write("Written by ncf2cbh.py\n")
             fp.write(f"{name} {nfeats}" + "\n")
@@ -172,7 +175,7 @@ def ncf2cbh(input_path: str, prefix: str, root_path: str, mode: str, ensemble: i
     Raises:
         FileNotFoundError: If the specified nc_fn file does not exist.
     """
-    print("in ncf2cbh")
+    logger.info("in ncf2cbh")
     # convert string to Path objects
     _input_path = Path(input_path)
     _root_path = Path(root_path)
@@ -187,10 +190,10 @@ def ncf2cbh(input_path: str, prefix: str, root_path: str, mode: str, ensemble: i
     elif mode == "op":
         nc_fn = Path(input_path) / f"{prefix}.nc"
     else:
-        print(f"mode: {mode} not in ensemble, median, or op")
+        logger.info(f"mode: {mode} not in ensemble, median, or op")
 
     if not os.path.exists(nc_fn):
-        print(f"Error: {nc_fn} does not exist.")
+        logger.error(f"Error: {nc_fn} does not exist.")
         sys.exit(1)
 
     run(_input_path, nc_fn, _root_path)
@@ -198,7 +201,7 @@ def main():
     try:
         app()
     except Exception as e:
-        print(e)
+        logger.error(e)
 
 if __name__ == "__main__":
     sys.exit(main())

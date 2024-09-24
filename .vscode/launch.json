@@ -57,7 +57,7 @@
                 "--env-file",
                 "nhm_uc.env",
                 "--method",
-                "ensemble"
+                "median"
             ],
             "envFile": "${workspaceFolder}/nhm_uc.env", // Adjust if your env file is located elsewhere
             "cwd": "${workspaceFolder}" // Sets the current working directory

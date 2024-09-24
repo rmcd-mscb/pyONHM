@@ -19,14 +19,7 @@ import logging
 import sys
 import os
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    handlers=[
-        logging.StreamHandler(sys.stdout)
-    ]
-)
+logger = logging.getLogger(__name__)
 
 def parse_arguments():
     parser = argparse.ArgumentParser(
@@ -56,10 +49,10 @@ def read_variable_info(json_path):
     try:
         with open(json_path, 'r') as f:
             variable_info = json.load(f)
-        logging.info(f"Loaded variable info from {json_path}")
+        logger.info(f"Loaded variable info from {json_path}")
         return variable_info
     except Exception as e:
-        logging.error(f"Failed to read variable info JSON: {e}")
+        logger.error(f"Failed to read variable info JSON: {e}")
         sys.exit(1)
 
 def read_georef_csv(csv_path):
@@ -78,10 +71,10 @@ def read_georef_csv(csv_path):
         if df.shape[1] != 1:
             raise ValueError(f"Expected one column in {csv_path}, got {df.shape[1]}")
         values = df.iloc[:,0].values
-        logging.info(f"Read {len(values)} values from {csv_path}")
+        logger.info(f"Read {len(values)} values from {csv_path}")
         return values
     except Exception as e:
-        logging.error(f"Failed to read georef CSV {csv_path}: {e}")
+        logger.error(f"Failed to read georef CSV {csv_path}: {e}")
         sys.exit(1)
 
 def read_csv_data(csv_path):
@@ -98,10 +91,10 @@ def read_csv_data(csv_path):
         df = pd.read_csv(csv_path, parse_dates=['Date'], dayfirst=False)
         df.rename(columns={'Date': 'time'}, inplace=True)
         df['time'] = pd.to_datetime(df['time'], format='%m/%d/%Y')
-        logging.info(f"Read {len(df)} time steps from {csv_path}")
+        # logger.info(f"Read {len(df)} time steps from {csv_path}")
         return df
     except Exception as e:
-        logging.error(f"Failed to read data CSV {csv_path}: {e}")
+        logger.error(f"Failed to read data CSV {csv_path}: {e}")
         sys.exit(1)
 
 def extract_ids_from_csv(csv_path):
@@ -118,10 +111,10 @@ def extract_ids_from_csv(csv_path):
         df_sample = pd.read_csv(csv_path, nrows=0)
         id_cols = [col for col in df_sample.columns if col != "Date"]
         ids = [int(col) for col in id_cols]
-        logging.info(f"Extracted IDs from {csv_path}: {ids}")
+        # logger.info(f"Extracted IDs from {csv_path}: {ids}")
         return ids
     except Exception as e:
-        logging.error(f"Failed to extract IDs from {csv_path}: {e}")
+        logger.error(f"Failed to extract IDs from {csv_path}: {e}")
         sys.exit(1)
 
 def create_netcdf_file(var_name, df, var_meta, georef, output_path):
@@ -147,7 +140,7 @@ def create_netcdf_file(var_name, df, var_meta, georef, output_path):
     if isinstance(dimid, str):
         dims = [dimid]  # Convert to list for consistency
     else:
-        logging.info(f"No 'dimid' found for variable '{var_name}'. Skipping NetCDF creation.")
+        logger.info(f"No 'dimid' found for variable '{var_name}'. Skipping NetCDF creation.")
         return  # Exit the function early to skip NetCDF creation for this variable
 
     # Extract data (exclude 'time' column)
@@ -159,7 +152,7 @@ def create_netcdf_file(var_name, df, var_meta, georef, output_path):
         conversion_factor = float(conversion_factor_str)
     except ValueError:
         conversion_factor = 1.0
-        logging.warning(f"Invalid conversion_factor '{conversion_factor_str}' for variable '{var_name}'. Using 1.0.")
+        logger.warning(f"Invalid conversion_factor '{conversion_factor_str}' for variable '{var_name}'. Using 1.0.")
     data = data * conversion_factor
 
     # Determine the number of features
@@ -169,7 +162,7 @@ def create_netcdf_file(var_name, df, var_meta, georef, output_path):
     end_date = df['time'].iloc[-1].strftime('%Y%m%d')
     nc_filename = output_path / f"{end_date}_{var_name}.nc"
 
-    logging.info(f"Creating NetCDF file: {nc_filename}")
+    logger.info(f"Creating NetCDF file: {nc_filename}")
 
     # Create NetCDF file
     with Dataset(nc_filename, "w", format="NETCDF4") as nc:
@@ -264,14 +257,14 @@ def convert_variables_to_netcdf(output_path, root_path, variable_info, varnames,
     """
     for var_name in varnames:
         if var_name not in variable_info["output_variables"]:
-            logging.warning(f"Variable '{var_name}' not found in variable_info_new.json. Skipping.")
+            logger.warning(f"Variable '{var_name}' not found in variable_info_new.json. Skipping.")
             continue
 
         var_meta = variable_info["output_variables"][var_name]
 
         csv_file = output_path / f"{var_name}.csv"
         if not csv_file.exists():
-            logging.warning(f"CSV file for variable '{var_name}' does not exist at {csv_file}. Skipping.")
+            logger.warning(f"CSV file for variable '{var_name}' does not exist at {csv_file}. Skipping.")
             continue
 
         df = read_csv_data(csv_file)
@@ -382,14 +375,14 @@ def main():
     for file in required_files_root:
         file_path = root_path / file
         if not file_path.exists():
-            logging.error(f"Required file '{file}' not found in root path '{root_path}'")
+            logger.error(f"Required file '{file}' not found in root path '{root_path}'")
             sys.exit(1)
 
     # Check for required files in output_path
     for file in required_files_output:
         file_path = output_path / file
         if not file_path.exists():
-            logging.error(f"Required file '{file}' not found in output path '{output_path}'")
+            logger.error(f"Required file '{file}' not found in output path '{output_path}'")
             sys.exit(1)
 
     # Read variable info
@@ -411,10 +404,10 @@ def main():
 
     # Verify that the number of IDs matches georef data
     if len(hruid_ids) != len(hru_lat) or len(hruid_ids) != len(hru_lon):
-        logging.error("Mismatch between number of HRU IDs and georeference data.")
+        logger.error("Mismatch between number of HRU IDs and georeference data.")
         sys.exit(1)
     if len(segid_ids) != len(seg_lat) or len(segid_ids) != len(seg_lon):
-        logging.error("Mismatch between number of SEGID IDs and georeference data.")
+        logger.error("Mismatch between number of SEGID IDs and georeference data.")
         sys.exit(1)
 
     # Consolidate georef data
@@ -434,5 +427,5 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        logging.error(f"An unexpected error occurred: {e}")
+        logger.error(f"An unexpected error occurred: {e}")
         sys.exit(1)
