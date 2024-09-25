@@ -290,8 +290,8 @@ def get_forecast_ensemble_prms_run_env(env_vars, restart_date, n):
         "PRMS_SAVE_VARS_TO_FILE": "0",
         "PRMS_CONTROL_FILE": env_vars.get("OP_PRMS_CONTROL_FILE"),
         "PRMS_RUN_TYPE": 1,
-        "PRMS_INPUT_DIR": str(project_root / "forecast "/ "input" / "ensembles" / start_date_string / f"ensemble_{int(n)}"),
-        "PRMS_OUTPUT_DIR": str(project_root / "forecast "/ "output" / "ensembles" / start_date_string / f"ensemble_{int(n)}"),
+        "PRMS_INPUT_DIR": str(project_root / "forecast"/ "input" / "ensembles" / start_date_string / f"ensemble_{int(n)}"),
+        "PRMS_OUTPUT_DIR": str(project_root / "forecast"/ "output" / "ensembles" / start_date_string / f"ensemble_{int(n)}"),
     }
     logger.debug("PRMS Forecast esemble run environment:\n%s", pformat(prms_env))
     
