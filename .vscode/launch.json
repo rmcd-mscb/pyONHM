@@ -31,6 +31,25 @@
             ]
         },
         {
+            "name": "Python Debugger: ncf2cbh",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pyonhm/ncf2cbh/ncf2cbh_gfv11_embedded.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--input-path",
+                "${workspaceFolder}/forecast/input/ensembles/2024-09-24",
+                "--prefix",
+                "2024-09-24_filled_converted",
+                "--root-path",
+                "/mnt/d/oNHM/NHM_PRMS_UC_GF_1_1/",
+                "--mode",
+                "ensemble",
+                "--ensemble",
+                "0"
+            ]
+        },
+        {
             "name": "Python Debugger: update-operational-restart",
             "type": "debugpy",
             "request": "launch",
@@ -123,7 +142,7 @@
                 "--env-file",
                 "nhm_uc.env",
                 "--method",
-                "median"
+                "ensemble"
             ],
             "envFile": "${workspaceFolder}/nhm_uc.env", // Adjust if your env file is located elsewhere
             "cwd": "${workspaceFolder}" // Sets the current working directory

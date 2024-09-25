@@ -187,7 +187,7 @@ def get_ncf2cbh_opvars(env_vars: dict, mode: str, ensemble: int = 0):
             "NCF2CBH_IDIR": str(forecast_idir / "ensembles" / start_date),
             # "NCF2CBH_PREFIX": env_vars.get("OP_NCF_PREFIX"),
             "NCF2CBH_PREFIX": "filled_converted",
-            "NCF2CBH_START_DATE": env_vars.get("START_DATE"),
+            "NCF2CBH_START_DATE": env_vars.get("FRCST_START_DATE"),
             "NCF2CBH_ROOT_DIR": env_vars.get("PROJECT_ROOT"),
             "NCF2CBH_ENS_NUM": ensemble,
             "NCF2CBH_MODE": "ensemble"

@@ -68,7 +68,7 @@ def read(nc_fn):
     # Figure out the variable names with data in the ncf.
     nc_vars = list(nc_fid.variables)
     remove_list = list(nc_dims)
-    remove_list.extend(["hru_lat", "hru_lon", "seg_lat", "seg_lon", "lat", "lon", "crs"])
+    remove_list.extend(["hru_lat", "hru_lon", "seg_lat", "seg_lon", "lat", "lon", "crs", "ens"])
     var_names = [e for e in nc_vars if e not in remove_list]
     # print 'var_names', var_names
 
@@ -123,8 +123,8 @@ def run(dir, nc_fn, nhmid_dir):
     # Write CBH files.
     for name in var_names:
         v = vals[name]
-        v2 = np.zeros(114958)
         nfeats = len(v[0])
+        v2 = np.zeros(nfeats)
         fn2 = Path(dir) / f"{name}.cbh"  # _t to separate unfilled from filled cbh file
         current_date = base_date
         logger.info(f"writing {fn2}")
@@ -185,6 +185,7 @@ def ncf2cbh(input_path: str, prefix: str, root_path: str, mode: str, ensemble: i
         # number suffix.
         i_path = Path(input_path) / f"ensemble_{ensemble}"
         nc_fn = i_path / f"{prefix}_{ensemble}.nc"
+        _input_path = i_path
     elif mode == "median":
         nc_fn = Path(input_path) / f"{prefix}_median.nc"
     elif mode == "op":
@@ -192,7 +193,7 @@ def ncf2cbh(input_path: str, prefix: str, root_path: str, mode: str, ensemble: i
     else:
         logger.info(f"mode: {mode} not in ensemble, median, or op")
 
-    if not os.path.exists(nc_fn):
+    if not nc_fn.exists():
         logger.error(f"Error: {nc_fn} does not exist.")
         sys.exit(1)
 
