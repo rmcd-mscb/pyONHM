@@ -186,7 +186,7 @@ def get_ncf2cbh_opvars(env_vars: dict, mode: str, ensemble: int = 0):
             # "NCF2CBH_IDIR": env_vars.get("CFSV2_NCF_ENSEMBLE_IDIR") + start_date + "/",
             "NCF2CBH_IDIR": str(forecast_idir / "ensembles" / start_date),
             # "NCF2CBH_PREFIX": env_vars.get("OP_NCF_PREFIX"),
-            "NCF2CBH_PREFIX": "converted_filled",
+            "NCF2CBH_PREFIX": "filled_converted",
             "NCF2CBH_START_DATE": env_vars.get("START_DATE"),
             "NCF2CBH_ROOT_DIR": env_vars.get("PROJECT_ROOT"),
             "NCF2CBH_ENS_NUM": ensemble,
@@ -198,7 +198,7 @@ def get_ncf2cbh_opvars(env_vars: dict, mode: str, ensemble: int = 0):
             #"NCF2CBH_IDIR": Path(env_vars.get("CFSV2_NCF_IDIR")) / "ensemble_median" / start_date,
             "NCF2CBH_IDIR": str(forecast_idir / "ensemble_median" / start_date),
             # "NCF2CBH_PREFIX": env_vars.get("CFSV2_NCF_MEDIAN_PREFIX"),
-            "NCF2CBH_PREFIX": "converted_filled",
+            "NCF2CBH_PREFIX": "filled_converted",
             "NCF2CBH_START_DATE": env_vars.get("FRCST_START_DATE"),
             "NCF2CBH_ROOT_DIR": env_vars.get("PROJECT_ROOT"),
             "NCF2CBH_ENS_NUM": 0,
@@ -409,7 +409,13 @@ def gridmet_updated() -> bool:
     tz = pytz.timezone("America/Denver")  # Replace with your timezone
     nowutc = datetime.now(pytz.utc)
     now = nowutc.astimezone(tz)
-    yesterday = (now - timedelta(days=1)).date()
+    # This allows for an operational run to occur anytime before 4PM MT.  Gridmet is updated, usually around
+    # 5 pm MT.  That is at 5 pm MT, gridmet will be updated through the previous day.  
+    if now.hour < 16:  # Check if the current time is before 4 PM
+        yesterday = (now - timedelta(days=2)).date()
+    else:
+        yesterday = (now - timedelta(days=1)).date()
+    
 
     status_list = []
     date_list = []
