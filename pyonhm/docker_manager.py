@@ -3,9 +3,11 @@ import argparse
 from io import BytesIO
 import docker
 import logging
+import logging.config
 import os
 import sys
 import subprocess
+import yaml
 from pyonhm import utils
 from docker.errors import ContainerError, ImageNotFound, APIError
 from datetime import datetime, timedelta
@@ -16,18 +18,10 @@ from typing_extensions import Annotated
 from typing import Any
 from logging.handlers import RotatingFileHandler
 
-# Configure logging with rotation
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        RotatingFileHandler('docker_manager.log', maxBytes=5*1024*1024, backupCount=5)  # 5MB per file, keep 5 backups
-    ]
-)
 
+utils.setup_logging()
 logger = logging.getLogger(__name__)
-
+logger.info("pyonhm application started")
 
 app = App(
     default_parameter=Parameter(negative=()),
@@ -36,6 +30,7 @@ g_build_load = Group.create_ordered(name="Admin Commands", help="Build images an
 g_operational = Group.create_ordered(name="Operational Commands", help="NHM daily operational model methods")
 g_sub_seasonal = Group.create_ordered(name="Sub-seasonal Forecast Commands", help="NHM sub-seasonal forecasts model methods")
 g_seasonal = Group.create_ordered(name="Seasonal Forecast Commands", help="NHM seasonal forecasts model methods")
+
 
 def validate_forecast(type_, value: str):
     valid_forecasts = ["median", "ensemble"]
@@ -470,7 +465,7 @@ class DockerManager:
             running_containers = self.client.containers.list(all=True)
             for container in running_containers:
                 # Adjust the check to handle the full tag format
-                if any(tag.startswith("nhmusgs/base") for tag in container.image.tags):
+                if any(tag.startswith("nhmusgs") for tag in container.image.tags):
                     logger.info(f"Stopping running container '{container.name}' associated with image 'nhmusgs/base'.")
                     container.stop()
                     # Wait until the container is fully stopped
@@ -738,7 +733,39 @@ class DockerManager:
                 logger.error("Failed to run container 'out2ncf'. Exiting...")
                 sys.exit(1)
 
-            
+        elif method == "ensemble":
+            for idx in range(48):  #  Loop through 48 ensembles
+                logger.info(f"Running ensemble number: {idx}")
+                med_vars = utils.get_ncf2cbh_opvars(env_vars=env_vars, mode=method, ensemble=idx)
+                success = self.run_container(
+                    image="nhmusgs/ncf2cbh", container_name="ncf2cbh", env_vars=med_vars
+                )
+                if not success:
+                    logger.error(f"Failed to run container 'ncf2cbh' for ensemble: {idx}. Exiting...")
+                    sys.exit(1)
+
+                prms_env = utils.get_forecast_ensemble_prms_run_env(
+                    env_vars=env_vars,
+                    restart_date=forecast_restart_date,
+                    n=idx)
+                success = self.run_container(
+                    image="nhmusgs/prms:5.2.1", container_name="prms", env_vars=prms_env
+                )
+                if not success:
+                    logger.error(f"Failed to run container 'prms' for ensemble: {idx}. Exiting...")
+                    sys.exit(1)
+
+                out2ncf_vars = utils.get_out2ncf_vars(env_vars=env_vars, mode="ensemble", ensemble=idx)
+                success = self.run_container(
+                    image="nhmusgs/out2ncf",
+                    container_name="out2ncf",
+                    env_vars=out2ncf_vars,
+                )
+                if not success:
+                    logger.error(f"Failed to run container 'out2ncf' for ensemble: {idx}. Exiting...")
+                    sys.exit(1)
+
+
     def operational_run(
             self,
             env_vars: dict,
@@ -1189,7 +1216,7 @@ def run_sub_seasonal(*, env_file: str, method: str) -> None:
     else:
         print("Failed to initialize Docker client.")
     docker_manager.forecast_run(env_vars=dict_env_vars, method=method)
-    print("TODO")
+
 
 @app.command(group=g_sub_seasonal)
 def run_list_available_forecasts(

@@ -10,9 +10,46 @@ from pathlib import Path
 from pprint import pprint
 from pprint import pformat
 import pytz
+import yaml
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
+
+def setup_logging(default_path='logging.yaml', default_level=logging.INFO, env_key='LOG_CFG'):
+    """Set up logging configuration.
+
+    This function configures the logging settings for the application by loading
+    a configuration from a YAML file specified by an environment variable. If the
+    file does not exist or an error occurs during loading, it falls back to a
+    basic logging configuration with a specified default level.
+
+    Args:
+        default_path (str): The default path to the logging configuration file.
+        default_level (int): The default logging level to use if the configuration file is not found or fails to load.
+        env_key (str): The environment variable key to retrieve the logging configuration file path.
+
+    Returns:
+        None
+
+    Raises:
+        yaml.YAMLError: If there is an error parsing the YAML configuration file.
+        Exception: For any other errors encountered while loading the logging configuration.
+    """
+    path = os.getenv(env_key, default_path)
+    if os.path.exists(path):
+        try:
+            with open(path, 'rt') as f:
+                config = yaml.safe_load(f.read())
+            logging.config.dictConfig(config)
+        except yaml.YAMLError as e:
+            logging.error(f"Error parsing YAML configuration file: {e}")
+            logging.basicConfig(level=default_level)
+        except Exception as e:
+            logging.error(f"Error loading logging configuration: {e}")
+            logging.basicConfig(level=default_level)
+    else:
+        logging.basicConfig(level=default_level)
 
 
 def adjust_date_str(date_str, days):
@@ -141,21 +178,27 @@ def env_update_forecast_dates(restart_date, env_vars):
     ).strftime("%Y,%m,%d,00,00,00")
 
 def get_ncf2cbh_opvars(env_vars: dict, mode: str, ensemble: int = 0):
+    forecast_idir = Path(env_vars.get("CFSV2_NCF_IDIR"))
+    op_idir = Path(env_vars.get("OP_NCF_IDIR"))
     if mode == "ensemble":
+        start_date = env_vars.get("FRCST_START_DATE")
         tvars = {
-            "NCF2CBH_IDIR": env_vars.get("CFSV2_NCF_ENSEMBLE_IDIR"),
+            # "NCF2CBH_IDIR": env_vars.get("CFSV2_NCF_ENSEMBLE_IDIR") + start_date + "/",
+            "NCF2CBH_IDIR": str(forecast_idir / "ensembles" / start_date),
             # "NCF2CBH_PREFIX": env_vars.get("OP_NCF_PREFIX"),
-            "NCF2CBH_PREFIX": "converted_filled",
-            "NCF2CBH_START_DATE": env_vars.get("START_DATE"),
+            "NCF2CBH_PREFIX": "filled_converted",
+            "NCF2CBH_START_DATE": env_vars.get("FRCST_START_DATE"),
             "NCF2CBH_ROOT_DIR": env_vars.get("PROJECT_ROOT"),
+            "NCF2CBH_ENS_NUM": ensemble,
             "NCF2CBH_MODE": "ensemble"
         }
     elif mode == "median":
         start_date = env_vars.get("FRCST_START_DATE")
         tvars = {
-            "NCF2CBH_IDIR": env_vars.get("CFSV2_NCF_ENSEMBLE_MED_IDIR") + start_date + "/",
+            #"NCF2CBH_IDIR": Path(env_vars.get("CFSV2_NCF_IDIR")) / "ensemble_median" / start_date,
+            "NCF2CBH_IDIR": str(forecast_idir / "ensemble_median" / start_date),
             # "NCF2CBH_PREFIX": env_vars.get("CFSV2_NCF_MEDIAN_PREFIX"),
-            "NCF2CBH_PREFIX": "converted_filled",
+            "NCF2CBH_PREFIX": "filled_converted",
             "NCF2CBH_START_DATE": env_vars.get("FRCST_START_DATE"),
             "NCF2CBH_ROOT_DIR": env_vars.get("PROJECT_ROOT"),
             "NCF2CBH_ENS_NUM": 0,
@@ -164,7 +207,7 @@ def get_ncf2cbh_opvars(env_vars: dict, mode: str, ensemble: int = 0):
 
     elif mode == "op":
         tvars = {
-            "NCF2CBH_IDIR": env_vars.get("OP_NCF_IDIR"),
+            "NCF2CBH_IDIR": str(op_idir),
             # "NCF2CBH_PREFIX": env_vars.get("OP_NCF_PREFIX"),
             "NCF2CBH_PREFIX": "converted_filled",
             "NCF2CBH_START_DATE": env_vars.get("START_DATE"),
@@ -176,51 +219,84 @@ def get_ncf2cbh_opvars(env_vars: dict, mode: str, ensemble: int = 0):
     return tvars
 
 def get_out2ncf_vars(env_vars: dict, mode: str, ensemble: int = 0):
-    project_root = env_vars.get("PROJECT_ROOT")
+    project_root = Path(env_vars.get("PROJECT_ROOT"))
     start_date_string = env_vars.get("FRCST_START_DATE")
+
     if mode == "ensemble":
+        out_work_path = (
+            project_root
+            / "forecast"
+            / "output"
+            / "ensembles"
+            / start_date_string
+            / f"ensemble_{ensemble}"
+        )
         tvars = {
-            "OUT_WORK_PATH": env_vars.get("OP_DIR") + "/output",
-            "OUT_ROOT_PATH": env_vars.get("PROJECT_ROOT")
+            "OUT_WORK_PATH": str(out_work_path),
+            "OUT_ROOT_PATH": str(project_root)
         }
     elif mode == "median":
-        start_date = env_vars.get("FRCST_START_DATE")
+        out_work_path = project_root / "forecast" / "output" / "ensemble_median" / start_date_string
         tvars = {
-            "OUT_WORK_PATH": f"{project_root}/forecast/output/ensemble_median/{start_date_string}",
-            "OUT_ROOT_PATH": env_vars.get("PROJECT_ROOT")
+            "OUT_WORK_PATH": str(out_work_path),
+            "OUT_ROOT_PATH": str(project_root)
         }
     elif mode == "op":
+        op_dir = Path(env_vars.get("OP_DIR"))
+        out_work_path = op_dir / "output"
         tvars = {
-            "OUT_WORK_PATH": env_vars.get("OP_DIR") + "/output",
-            "OUT_ROOT_PATH": env_vars.get("PROJECT_ROOT")
+            "OUT_WORK_PATH": str(out_work_path),
+            "OUT_ROOT_PATH": str(project_root)
         }
+    else:
+        raise ValueError(f"Unsupported mode: {mode}")
+
     return tvars
 
 def get_forecast_median_prms_run_env(env_vars, restart_date):
-   
     start_date_string = env_vars.get("FRCST_START_DATE")
-    end_date_string = env_vars.get("FRCST_END_DATE")
-    project_root = env_vars.get("PROJECT_ROOT")
-    op_dir = env_vars.get("OP_DIR")
-    frcst_dir = env_vars.get("FRCST_DIR")
+    project_root = Path(env_vars.get("PROJECT_ROOT"))
 
     prms_env = {
-        "OP_DIR": project_root,
-        "FRCST_DIR": project_root,
+        "OP_DIR": str(project_root),
+        "FRCST_DIR": str(project_root),
         "PRMS_RESTART_DATE": restart_date,
         "PRMS_START_TIME": env_vars.get("FRCST_START_TIME"),
         "PRMS_END_TIME": env_vars.get("FRCST_END_TIME"),
         "PRMS_INIT_VARS_FROM_FILE": "1",
-        "PRMS_VAR_INIT_FILE": f"{project_root}/forecast/restart/{restart_date}.restart",
+        "PRMS_VAR_INIT_FILE": str(project_root / "forecast" / "restart" / f"{restart_date}.restart"),
         "PRMS_SAVE_VARS_TO_FILE": "0",
         "PRMS_CONTROL_FILE": env_vars.get("OP_PRMS_CONTROL_FILE"),
         "PRMS_RUN_TYPE": 1,
-        "PRMS_INPUT_DIR": f"{project_root}/forecast/input/ensemble_median/{start_date_string}",
-        "PRMS_OUTPUT_DIR": f"{project_root}/forecast/output/ensemble_median/{start_date_string}"
+        "PRMS_INPUT_DIR": str(project_root / "forecast" / "input" / "ensemble_median" / start_date_string),
+        "PRMS_OUTPUT_DIR": str(project_root / "forecast" / "output" / "ensemble_median" / start_date_string)
     }
-    logger.debug("PRMS RUN ENV:\n%s", pformat(prms_env))
+    logger.debug("PRMS Forecast median run env:\n%s", pformat(prms_env))
     
     return prms_env
+
+def get_forecast_ensemble_prms_run_env(env_vars, restart_date, n):
+    start_date_string = env_vars.get("FRCST_START_DATE")
+    project_root = Path(env_vars.get("PROJECT_ROOT"))
+
+    prms_env = {
+        "OP_DIR": str(project_root),
+        "FRCST_DIR": str(project_root),
+        "PRMS_RESTART_DATE": restart_date,
+        "PRMS_START_TIME": env_vars.get("FRCST_START_TIME"),
+        "PRMS_END_TIME": env_vars.get("FRCST_END_TIME"),
+        "PRMS_INIT_VARS_FROM_FILE": "1",
+        "PRMS_VAR_INIT_FILE": str(project_root / "forecast" / "restart" /f"{restart_date}.restart"),
+        "PRMS_SAVE_VARS_TO_FILE": "0",
+        "PRMS_CONTROL_FILE": env_vars.get("OP_PRMS_CONTROL_FILE"),
+        "PRMS_RUN_TYPE": 1,
+        "PRMS_INPUT_DIR": str(project_root / "forecast"/ "input" / "ensembles" / start_date_string / f"ensemble_{int(n)}"),
+        "PRMS_OUTPUT_DIR": str(project_root / "forecast"/ "output" / "ensembles" / start_date_string / f"ensemble_{int(n)}"),
+    }
+    logger.debug("PRMS Forecast esemble run environment:\n%s", pformat(prms_env))
+    
+    return prms_env
+
 
 def get_prms_run_env(env_vars, restart_date):
     start_date = datetime.strptime(env_vars.get("START_DATE"), "%Y-%m-%d")
@@ -230,26 +306,26 @@ def get_prms_run_env(env_vars, restart_date):
     end_date = datetime.strptime(env_vars.get("END_DATE"), "%Y-%m-%d")
     end_time = end_date.strftime("%Y,%m,%d,00,00,00")
     end_date_string = env_vars.get("END_DATE")
-    project_root = env_vars.get("PROJECT_ROOT")
+    project_root = Path(env_vars.get("PROJECT_ROOT"))
 
     prms_env = {
-        "OP_DIR": project_root,
-        "FRCST_DIR": project_root,
+        "OP_DIR": str(project_root),
+        "FRCST_DIR": str(project_root),
         "PRMS_START_TIME": start_time,
         "PRMS_END_TIME": end_time,
         "PRMS_INIT_VARS_FROM_FILE": "1",
         "PRMS_RESTART_DATE": restart_date,
-        "PRMS_VAR_INIT_FILE": f"{project_root}/daily/restart/{restart_date}.restart",
+        "PRMS_VAR_INIT_FILE": str(project_root / "daily" / "restart" / f"{restart_date}.restart"),
         "PRMS_SAVE_VARS_TO_FILE": "1",
-        "PRMS_VAR_SAVE_FILE": f"{project_root}/forecast/restart/{end_date_string}.restart",
+        "PRMS_VAR_SAVE_FILE": str(project_root / "forecast" / "restart" / f"{end_date_string}.restart"),
         "PRMS_CONTROL_FILE": env_vars.get("OP_PRMS_CONTROL_FILE"),
         "PRMS_RUN_TYPE": 0,
-        "PRMS_INPUT_DIR": f"{project_root}/daily/input",
-        "PRMS_OUTPUT_DIR": f"{project_root}/daily/output"
+        "PRMS_INPUT_DIR": str(project_root / "daily" / "input"),
+        "PRMS_OUTPUT_DIR": str(project_root / "daily" / "output")
     }
     
     # Use pprint to format the dictionary for logging
-    logger.debug("PRMS RUN ENV:\n%s", pformat(prms_env))
+    logger.debug("PRMS Operational run environment:\n%s", pformat(prms_env))
     
     return prms_env
 
@@ -260,10 +336,10 @@ def get_cfsv2_env(env_vars: dict, method: str):
     elif method == "median":
         mode = 1
     return {
-        "MODEL_PARAM_FILE": env_vars.get("CFSV2_NCF_MPF"),
-        "TARGET_FILE": env_vars.get("GM_TARGET_FILE"),
-        "OUTPATH": env_vars.get("CFSV2_NCF_IDIR"),
-        "WEIGHTS_FILE": env_vars.get("GM_WEIGHTS_FILE"),
+        "MODEL_PARAM_FILE": str(Path(env_vars.get("CFSV2_NCF_MPF"))),
+        "TARGET_FILE": str(Path(env_vars.get("GM_TARGET_FILE"))),
+        "OUTPATH": str(Path(env_vars.get("CFSV2_NCF_IDIR"))),
+        "WEIGHTS_FILE": str(Path(env_vars.get("GM_WEIGHTS_FILE"))),
         "METHOD": mode,
     }
 
@@ -274,22 +350,21 @@ def get_prms_restart_env(env_vars):
     # Format START_DATE as needed
     start_time = start_date.strftime("%Y,%m,%d,00,00,00")
     env_vars["START_TIME"] = start_time
-    project_root = env_vars.get("PROJECT_ROOT")
-    op_dir = env_vars.get("OP_DIR")
-    frcst_dir = env_vars.get("FRCST_DIR")
+    project_root = Path(env_vars.get("PROJECT_ROOT"))
+    
     prms_restart_env = {
-        "OP_DIR": project_root,
-        "FRCST_DIR": project_root,
+        "OP_DIR": str(project_root),
+        "FRCST_DIR": str(project_root),
         "PRMS_START_TIME": env_vars.get("START_TIME"),
         "PRMS_END_TIME": env_vars.get("SAVE_RESTART_TIME"),
-        "PRMS_INIT_VARS_FROM_FILE": 1,
-        "PRMS_VAR_INIT_FILE": f"{project_root}/daily/restart/{env_vars.get('NEW_RESTART_DATE')}.restart",
-        "PRMS_SAVE_VARS_TO_FILE": 1,
-        "PRMS_VAR_SAVE_FILE": f"{project_root}/daily/restart/{env_vars.get('SAVE_RESTART_DATE')}.restart",
+        "PRMS_INIT_VARS_FROM_FILE": "1",
+        "PRMS_VAR_INIT_FILE": str(project_root / "daily" / "restart" / f"{env_vars.get('NEW_RESTART_DATE')}.restart"),
+        "PRMS_SAVE_VARS_TO_FILE": "1",
+        "PRMS_VAR_SAVE_FILE": str(project_root / "daily" / "restart" / f"{env_vars.get('SAVE_RESTART_DATE')}.restart"),
         "PRMS_CONTROL_FILE": env_vars.get("OP_PRMS_CONTROL_FILE"),
         "PRMS_RUN_TYPE": 0,
-        "PRMS_INPUT_DIR": f"{project_root}/daily/input",
-        "PRMS_OUTPUT_DIR": f"{project_root}/daily/output"
+        "PRMS_INPUT_DIR": str(project_root / "daily" / "input"),
+        "PRMS_OUTPUT_DIR": str(project_root / "daily" / "output")
     }
     logger.debug("PRMS RUN ENV:\n%s", pformat(prms_restart_env))
     
@@ -334,7 +409,13 @@ def gridmet_updated() -> bool:
     tz = pytz.timezone("America/Denver")  # Replace with your timezone
     nowutc = datetime.now(pytz.utc)
     now = nowutc.astimezone(tz)
-    yesterday = (now - timedelta(days=1)).date()
+    # This allows for an operational run to occur anytime before 4PM MT.  Gridmet is updated, usually around
+    # 5 pm MT.  That is at 5 pm MT, gridmet will be updated through the previous day.  
+    if now.hour < 16:  # Check if the current time is before 4 PM
+        yesterday = (now - timedelta(days=2)).date()
+    else:
+        yesterday = (now - timedelta(days=1)).date()
+    
 
     status_list = []
     date_list = []
