@@ -1216,7 +1216,7 @@ def run_sub_seasonal(*, env_file: str, method: str) -> None:
     else:
         print("Failed to initialize Docker client.")
     docker_manager.forecast_run(env_vars=dict_env_vars, method=method)
-    print("TODO")
+
 
 @app.command(group=g_sub_seasonal)
 def run_list_available_forecasts(
