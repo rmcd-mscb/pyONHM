@@ -465,7 +465,7 @@ class DockerManager:
             running_containers = self.client.containers.list(all=True)
             for container in running_containers:
                 # Adjust the check to handle the full tag format
-                if any(tag.startswith("nhmusgs/base") for tag in container.image.tags):
+                if any(tag.startswith("nhmusgs") for tag in container.image.tags):
                     logger.info(f"Stopping running container '{container.name}' associated with image 'nhmusgs/base'.")
                     container.stop()
                     # Wait until the container is fully stopped
