@@ -1,0 +1,4658 @@
+{
+    "tz_code": "-05:00",
+    "nc_name": "nhm_conus",
+    "cdl_file_name": ".//output/nhm_output_example.cdl",
+    "ncf_file_name": ".//output/nhm_output_example.ncf",
+    "output_variables": {
+        "albedo": {
+            "long_name": "Snow surface albedo or the fraction of radiation reflected from the snowpack surface",
+            "standard_name": "surface_albedo_assuming_deep_snow",
+            "source": ".//output/albedo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": "1.0",
+            "prms_out_file": ".//output/albedo.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "cap_waterin": {
+            "long_name": "Infiltration and any cascading interflow and Dunnian surface runoff added to capillary reservoir storage",
+            "standard_name": "cap_waterin",
+            "source": ".//output/cap_waterin.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "inch",
+            "out_units": "mm",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/cap_waterin.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "contrib_fraction": {
+            "long_name": "Contributing area of each HRU pervious area",
+            "standard_name": "contrib_fraction",
+            "source": ".//output/contrib_fraction.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": "1",
+            "prms_out_file": ".//output/contrib_fraction.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_area_open": {
+            "long_name": "Surface area of open surface depressions based on storage volume",
+            "standard_name": "dprst_area_open",
+            "source": ".//output/dprst_area_open.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "acre",
+            "out_units": "1",
+            "conversion_factor": "1",
+            "prms_out_file": ".//output/dprst_area_open.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "soil_moist": {
+            "long_name": "Soil moisture content",
+            "standard_name": "lwe_thickness_of_moisture_content_of_soil_layer",
+            "source": ".//output/soil_moist.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "inch",
+            "out_units": "mm",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/soil_moist.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "lateral_flow": {
+            "long_name": "Lateral flow from HRU into the corresponding stream segment",
+            "standard_name": "lateral_flow",
+            "source": ".//output/nhru_hru_lateral_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "inch/day",
+            "out_units": "mm/day",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/nhru_hru_lateral_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "seg_outflow": {
+            "long_name": "Streamflow in channel",
+            "standard_name": "water_volume_transport_in_river_channel",
+            "source": ".//output/seg_outflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": "0.0283168",
+            "prms_out_file": ".//output/seg_outflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_tave_water": {
+            "long_name": "Stream temperature in channel",
+            "standard_name": "seg_tave_water",
+            "source": ".//output/seg_tave_water.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": "1.0",
+            "prms_out_file": ".//output/seg_tave_water.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "pkwater_equiv": {
+            "long_name": "Snowpack water equivalent",
+            "standard_name": "liquid_water_content_of_surface_snow",
+            "source": ".//output/pkwater_equiv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/pkwater_equiv.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "soil_moist_tot": {
+            "long_name": "Total soil-zone water storage (soil_moist + ssres_stor)",
+            "standard_name": "lwe_thickness_of_soil_moisture_content",
+            "source": ".//output/soil_moist_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/soil_moist_tot.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_intcpstor": {
+            "long_name": "HRU area-weighted average Interception storage in the canopy for each HRU",
+            "standard_name": "lwe_thickness_of_canopy_water_amount",
+            "source": ".//output/hru_intcpstor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/hru_intcpstor.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_impervstor": {
+            "long_name": "HRU area-weighted average storage on impervious area for each HRU",
+            "standard_name": "lwe_thickness_of_impervious_area_water_amount",
+            "source": ".//output/hru_impervstor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/hru_impervstor.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "gwres_stor": {
+            "long_name": "Storage in each GWR",
+            "standard_name": "lwe_thickness_of_groundwater_amount",
+            "source": ".//output/gwres_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/gwres_stor.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_stor_hru": {
+            "long_name": "Surface-depression storage for each HRU",
+            "standard_name": "lwe_thickness_of_surface-depression_water_amount",
+            "source": ".//output/dprst_stor_hru.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": "25.4",
+            "prms_out_file": ".//output/dprst_stor_hru.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "ai": {
+            "long_name": "Maximum snowpack for each HRU",
+            "standard_name": "ai",
+            "source": ".//output/ai.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/ai.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "basin_actet": {
+            "long_name": "Basin area-weighted average actual ET",
+            "standard_name": "basin_actet",
+            "source": ".//output/basin_actet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_actet.csv",
+            "georef": null
+        },
+        "basin_actet_mo": {
+            "long_name": "Monthly basin area-weighted average actual ET",
+            "standard_name": "basin_actet_mo",
+            "source": ".//output/basin_actet_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_actet_mo.csv",
+            "georef": null
+        },
+        "basin_actet_tot": {
+            "long_name": "Total simulation basin area-weighted average actual ET",
+            "standard_name": "basin_actet_tot",
+            "source": ".//output/basin_actet_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_actet_tot.csv",
+            "georef": null
+        },
+        "basin_actet_yr": {
+            "long_name": "Yearly basin area-weighted average actual ET",
+            "standard_name": "basin_actet_yr",
+            "source": ".//output/basin_actet_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_actet_yr.csv",
+            "georef": null
+        },
+        "basin_cap_infil_tot": {
+            "long_name": "Basin area-weighted average infiltration with cascading flow into capillary reservoirs",
+            "standard_name": "basin_cap_infil_tot",
+            "source": ".//output/basin_cap_infil_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_cap_infil_tot.csv",
+            "georef": null
+        },
+        "basin_cap_up_max": {
+            "long_name": "Basin area-weighted average maximum cascade flow that flows to capillary reservoirs",
+            "standard_name": "basin_cap_up_max",
+            "source": ".//output/basin_cap_up_max.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_cap_up_max.csv",
+            "georef": null
+        },
+        "basin_capwaterin": {
+            "long_name": "Basin area-weighted average infiltration, cascading interflow and Dunnian flow added to capillary reservoir storage",
+            "standard_name": "basin_capwaterin",
+            "source": ".//output/basin_capwaterin.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_capwaterin.csv",
+            "georef": null
+        },
+        "basin_cfs": {
+            "long_name": "Streamflow leaving the basin through the stream network",
+            "standard_name": "basin_cfs",
+            "source": ".//output/basin_cfs.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/basin_cfs.csv",
+            "georef": null
+        },
+        "basin_cfs_mo": {
+            "long_name": "Monthly total streamflow to stream network",
+            "standard_name": "basin_cfs_mo",
+            "source": ".//output/basin_cfs_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/basin_cfs_mo.csv",
+            "georef": null
+        },
+        "basin_cfs_tot": {
+            "long_name": "Total simulation basin area-weighted average streamflow",
+            "standard_name": "basin_cfs_tot",
+            "source": ".//output/basin_cfs_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_cfs_tot.csv",
+            "georef": null
+        },
+        "basin_cfs_yr": {
+            "long_name": "Yearly total streamflow to stream network",
+            "standard_name": "basin_cfs_yr",
+            "source": ".//output/basin_cfs_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/basin_cfs_yr.csv",
+            "georef": null
+        },
+        "basin_changeover": {
+            "long_name": "Basin area-weighted average water released from a change over of canopy cover type",
+            "standard_name": "basin_changeover",
+            "source": ".//output/basin_changeover.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_changeover.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "basin_cms": {
+            "long_name": "Streamflow leaving the basin through the stream network",
+            "standard_name": "basin_cms",
+            "source": ".//output/basin_cms.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "m3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_cms.csv",
+            "georef": null
+        },
+        "basin_contrib_fraction": {
+            "long_name": "Basin area-weighted average contributing area of the pervious area of each HRU",
+            "standard_name": "basin_contrib_fraction",
+            "source": ".//output/basin_contrib_fraction.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_contrib_fraction.csv",
+            "georef": null
+        },
+        "basin_cpr_stor_frac": {
+            "long_name": "Basin area-weighted average fraction of capillary reservoir storage of the maximum storage",
+            "standard_name": "basin_cpr_stor_frac",
+            "source": ".//output/basin_cpr_stor_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_cpr_stor_frac.csv",
+            "georef": null
+        },
+        "basin_dprst_evap": {
+            "long_name": "Basin area-weighted average evaporation from surface-depression storage",
+            "standard_name": "basin_dprst_evap",
+            "source": ".//output/basin_dprst_evap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_dprst_evap.csv",
+            "georef": null
+        },
+        "basin_dprst_seep": {
+            "long_name": "Basin area-weighted average seepage from surface-depression storage",
+            "standard_name": "basin_dprst_seep",
+            "source": ".//output/basin_dprst_seep.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_dprst_seep.csv",
+            "georef": null
+        },
+        "basin_dprst_sroff": {
+            "long_name": "Basin area-weighted average surface runoff from open surface-depression storage",
+            "standard_name": "basin_dprst_sroff",
+            "source": ".//output/basin_dprst_sroff.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_dprst_sroff.csv",
+            "georef": null
+        },
+        "basin_dprst_volcl": {
+            "long_name": "Basin area-weighted average storage volume in closed surface depressions",
+            "standard_name": "basin_dprst_volcl",
+            "source": ".//output/basin_dprst_volcl.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_dprst_volcl.csv",
+            "georef": null
+        },
+        "basin_dprst_volop": {
+            "long_name": "Basin area-weighted average storage volume in open surface depressions",
+            "standard_name": "basin_dprst_volop",
+            "source": ".//output/basin_dprst_volop.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_dprst_volop.csv",
+            "georef": null
+        },
+        "basin_dunnian": {
+            "long_name": "Basin area-weighted average Dunnian surface runoff that flows to the stream network",
+            "standard_name": "basin_dunnian",
+            "source": ".//output/basin_dunnian.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_dunnian.csv",
+            "georef": null
+        },
+        "basin_dunnian_gvr": {
+            "long_name": "Basin area-weighted average excess flow to preferential-flow reservoirs from gravity reservoirs",
+            "standard_name": "basin_dunnian_gvr",
+            "source": ".//output/basin_dunnian_gvr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_dunnian_gvr.csv",
+            "georef": null
+        },
+        "basin_dunnian_pfr": {
+            "long_name": "Basin area-weighted average excess infiltration to preferential-flow reservoirs from variable infil",
+            "standard_name": "basin_dunnian_pfr",
+            "source": ".//output/basin_dunnian_pfr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_dunnian_pfr.csv",
+            "georef": null
+        },
+        "basin_gvr2pfr": {
+            "long_name": "Basin area-weighted average excess flow to preferential-flow reservoir storage from gravity reservoirs",
+            "standard_name": "basin_gvr2pfr",
+            "source": ".//output/basin_gvr2pfr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gvr2pfr.csv",
+            "georef": null
+        },
+        "basin_gvr_stor_frac": {
+            "long_name": "Basin area-weighted average fraction of gravity reservoir storage of the maximum storage",
+            "standard_name": "basin_gvr_stor_frac",
+            "source": ".//output/basin_gvr_stor_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_gvr_stor_frac.csv",
+            "georef": null
+        },
+        "basin_gwflow": {
+            "long_name": "Basin area-weighted average of groundwater flow to the stream network",
+            "standard_name": "basin_gwflow",
+            "source": ".//output/basin_gwflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gwflow.csv",
+            "georef": null
+        },
+        "basin_gwflow_cfs": {
+            "long_name": "Basin area-weighted average of groundwater flow to the stream network",
+            "standard_name": "basin_gwflow_cfs",
+            "source": ".//output/basin_gwflow_cfs.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/basin_gwflow_cfs.csv",
+            "georef": null
+        },
+        "basin_gwflow_mo": {
+            "long_name": "Monthly basin area-weighted average groundwater discharge",
+            "standard_name": "basin_gwflow_mo",
+            "source": ".//output/basin_gwflow_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gwflow_mo.csv",
+            "georef": null
+        },
+        "basin_gwflow_tot": {
+            "long_name": "Total simulation basin area-weighted average groundwater discharge",
+            "standard_name": "basin_gwflow_tot",
+            "source": ".//output/basin_gwflow_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gwflow_tot.csv",
+            "georef": null
+        },
+        "basin_gwflow_yr": {
+            "long_name": "Yearly basin area-weighted average groundwater discharge",
+            "standard_name": "basin_gwflow_yr",
+            "source": ".//output/basin_gwflow_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gwflow_yr.csv",
+            "georef": null
+        },
+        "basin_gwin": {
+            "long_name": "Basin area-weighted average of inflow to GWRs",
+            "standard_name": "basin_gwin",
+            "source": ".//output/basin_gwin.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gwin.csv",
+            "georef": null
+        },
+        "basin_gwsink": {
+            "long_name": "Basin area-weighted average of GWR outflow to the groundwater sink",
+            "standard_name": "basin_gwsink",
+            "source": ".//output/basin_gwsink.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gwsink.csv",
+            "georef": null
+        },
+        "basin_gwstor": {
+            "long_name": "Basin area-weighted average of storage in GWRs",
+            "standard_name": "basin_gwstor",
+            "source": ".//output/basin_gwstor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gwstor.csv",
+            "georef": null
+        },
+        "basin_gwstor_minarea_wb": {
+            "long_name": "Basin area-weighted average storage added to each GWR when storage is less than gwstor_min",
+            "standard_name": "basin_gwstor_minarea_wb",
+            "source": ".//output/basin_gwstor_minarea_wb.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_gwstor_minarea_wb.csv",
+            "georef": null
+        },
+        "basin_horad": {
+            "long_name": "Potential shortwave radiation for the basin centroid",
+            "standard_name": "basin_horad",
+            "source": ".//output/basin_horad.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/basin_horad.csv",
+            "georef": null
+        },
+        "basin_hortonian": {
+            "long_name": "Basin area-weighted average Hortonian runoff",
+            "standard_name": "basin_hortonian",
+            "source": ".//output/basin_hortonian.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_hortonian.csv",
+            "georef": null
+        },
+        "basin_imperv_evap": {
+            "long_name": "Basin area-weighted average evaporation from impervious area",
+            "standard_name": "basin_imperv_evap",
+            "source": ".//output/basin_imperv_evap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_imperv_evap.csv",
+            "georef": null
+        },
+        "basin_imperv_stor": {
+            "long_name": "Basin area-weighted average storage on impervious area",
+            "standard_name": "basin_imperv_stor",
+            "source": ".//output/basin_imperv_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_imperv_stor.csv",
+            "georef": null
+        },
+        "basin_infil": {
+            "long_name": "Basin area-weighted average infiltration to the capillary reservoirs",
+            "standard_name": "basin_infil",
+            "source": ".//output/basin_infil.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_infil.csv",
+            "georef": null
+        },
+        "basin_intcp_evap": {
+            "long_name": "Basin area-weighted evaporation from the canopy",
+            "standard_name": "basin_intcp_evap",
+            "source": ".//output/basin_intcp_evap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_intcp_evap.csv",
+            "georef": null
+        },
+        "basin_intcp_evap_mo": {
+            "long_name": "Monthly basin area-weighted average interception evaporation",
+            "standard_name": "basin_intcp_evap_mo",
+            "source": ".//output/basin_intcp_evap_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_intcp_evap_mo.csv",
+            "georef": null
+        },
+        "basin_intcp_evap_tot": {
+            "long_name": "Total simulation basin area-weighted average canopy evaporation",
+            "standard_name": "basin_intcp_evap_tot",
+            "source": ".//output/basin_intcp_evap_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_intcp_evap_tot.csv",
+            "georef": null
+        },
+        "basin_intcp_evap_yr": {
+            "long_name": "Yearly basin area-weighted average canopy evaporation",
+            "standard_name": "basin_intcp_evap_yr",
+            "source": ".//output/basin_intcp_evap_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_intcp_evap_yr.csv",
+            "georef": null
+        },
+        "basin_intcp_stor": {
+            "long_name": "Basin area-weighted average interception storage",
+            "standard_name": "basin_intcp_stor",
+            "source": ".//output/basin_intcp_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_intcp_stor.csv",
+            "georef": null
+        },
+        "basin_interflow_max": {
+            "long_name": "Basin area-weighted average maximum interflow that flows from gravity reservoirs",
+            "standard_name": "basin_interflow_max",
+            "source": ".//output/basin_interflow_max.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_interflow_max.csv",
+            "georef": null
+        },
+        "basin_lake_stor": {
+            "long_name": "Basin volume-weighted average storage for all lakes using broad-crested weir or gate opening routing",
+            "standard_name": "basin_lake_stor",
+            "source": ".//output/basin_lake_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_lake_stor.csv",
+            "georef": null
+        },
+        "basin_lakeevap": {
+            "long_name": "Basin area-weighted average lake evaporation",
+            "standard_name": "basin_lakeevap",
+            "source": ".//output/basin_lakeevap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_lakeevap.csv",
+            "georef": null
+        },
+        "basin_lakeprecip": {
+            "long_name": "Basin area-weighted average precipitation on lake HRUs",
+            "standard_name": "basin_lakeprecip",
+            "source": ".//output/basin_lakeprecip.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_lakeprecip.csv",
+            "georef": null
+        },
+        "basin_max_temp_mo": {
+            "long_name": "Monthly basin area-weighted average maximum air temperature",
+            "standard_name": "basin_max_temp_mo",
+            "source": ".//output/basin_max_temp_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_max_temp_mo.csv",
+            "georef": null
+        },
+        "basin_max_temp_tot": {
+            "long_name": "Total simulation basin area-weighted average maximum temperature",
+            "standard_name": "basin_max_temp_tot",
+            "source": ".//output/basin_max_temp_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_max_temp_tot.csv",
+            "georef": null
+        },
+        "basin_max_temp_yr": {
+            "long_name": "Yearly basin area-weighted average maximum temperature",
+            "standard_name": "basin_max_temp_yr",
+            "source": ".//output/basin_max_temp_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_max_temp_yr.csv",
+            "georef": null
+        },
+        "basin_min_temp_mo": {
+            "long_name": "Monthly basin area-weighted average minimum air temperature",
+            "standard_name": "basin_min_temp_mo",
+            "source": ".//output/basin_min_temp_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_min_temp_mo.csv",
+            "georef": null
+        },
+        "basin_min_temp_tot": {
+            "long_name": "Total simulation basin area-weighted average minimum temperature",
+            "standard_name": "basin_min_temp_tot",
+            "source": ".//output/basin_min_temp_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_min_temp_tot.csv",
+            "georef": null
+        },
+        "basin_min_temp_yr": {
+            "long_name": "Yearly basin area-weighted average minimum temperature",
+            "standard_name": "basin_min_temp_yr",
+            "source": ".//output/basin_min_temp_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_min_temp_yr.csv",
+            "georef": null
+        },
+        "basin_net_ppt": {
+            "long_name": "Basin area-weighted average net precipitation",
+            "standard_name": "basin_net_ppt",
+            "source": ".//output/basin_net_ppt.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_net_ppt.csv",
+            "georef": null
+        },
+        "basin_net_ppt_mo": {
+            "long_name": "Monthly area-weighted average net precipitation",
+            "standard_name": "basin_net_ppt_mo",
+            "source": ".//output/basin_net_ppt_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_net_ppt_mo.csv",
+            "georef": null
+        },
+        "basin_net_ppt_yr": {
+            "long_name": "Yearly basin area-weighted average net precipitation",
+            "standard_name": "basin_net_ppt_yr",
+            "source": ".//output/basin_net_ppt_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_net_ppt_yr.csv",
+            "georef": null
+        },
+        "basin_net_rain": {
+            "long_name": "Basin area-weighted average rain net precipitation",
+            "standard_name": "basin_net_rain",
+            "source": ".//output/basin_net_rain.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_net_rain.csv",
+            "georef": null
+        },
+        "basin_net_snow": {
+            "long_name": "Basin area-weighted average snow net precipitation",
+            "standard_name": "basin_net_snow",
+            "source": ".//output/basin_net_snow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_net_snow.csv",
+            "georef": null
+        },
+        "basin_obs_ppt": {
+            "long_name": "Basin area-weighted average measured precipitation",
+            "standard_name": "basin_obs_ppt",
+            "source": ".//output/basin_obs_ppt.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_obs_ppt.csv",
+            "georef": null
+        },
+        "basin_orad": {
+            "long_name": "Basin area-weighted average solar radiation on a horizontal surface",
+            "standard_name": "basin_orad",
+            "source": ".//output/basin_orad.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/basin_orad.csv",
+            "georef": null
+        },
+        "basin_perv_et": {
+            "long_name": "Basin area-weighted average ET from capillary reservoirs",
+            "standard_name": "basin_perv_et",
+            "source": ".//output/basin_perv_et.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_perv_et.csv",
+            "georef": null
+        },
+        "basin_pfr_stor_frac": {
+            "long_name": "Basin area-weighted average fraction of preferential-flow reservoir storage of the maximum storage",
+            "standard_name": "basin_pfr_stor_frac",
+            "source": ".//output/basin_pfr_stor_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_pfr_stor_frac.csv",
+            "georef": null
+        },
+        "basin_pk_precip": {
+            "long_name": "Basin area-weighted average precipitation added to snowpack",
+            "standard_name": "basin_pk_precip",
+            "source": ".//output/basin_pk_precip.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_pk_precip.csv",
+            "georef": null
+        },
+        "basin_potet": {
+            "long_name": "Basin area-weighted average potential ET",
+            "standard_name": "basin_potet",
+            "source": ".//output/basin_potet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_potet.csv",
+            "georef": null
+        },
+        "basin_potet_mo": {
+            "long_name": "Monthly basin area-weighted average potential ET",
+            "standard_name": "basin_potet_mo",
+            "source": ".//output/basin_potet_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_potet_mo.csv",
+            "georef": null
+        },
+        "basin_potet_tot": {
+            "long_name": "Total simulation basin area-weighted average potential ET",
+            "standard_name": "basin_potet_tot",
+            "source": ".//output/basin_potet_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_potet_tot.csv",
+            "georef": null
+        },
+        "basin_potet_yr": {
+            "long_name": "Yearly basin area-weighted average potential ET",
+            "standard_name": "basin_potet_yr",
+            "source": ".//output/basin_potet_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_potet_yr.csv",
+            "georef": null
+        },
+        "basin_potsw": {
+            "long_name": "Basin area-weighted average shortwave radiation",
+            "standard_name": "basin_potsw",
+            "source": ".//output/basin_potsw.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/basin_potsw.csv",
+            "georef": null
+        },
+        "basin_ppt": {
+            "long_name": "Basin area-weighted average precipitation",
+            "standard_name": "basin_ppt",
+            "source": ".//output/basin_ppt.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ppt.csv",
+            "georef": null
+        },
+        "basin_ppt_mo": {
+            "long_name": "Monthly basin area-weighted average precipitation",
+            "standard_name": "basin_ppt_mo",
+            "source": ".//output/basin_ppt_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ppt_mo.csv",
+            "georef": null
+        },
+        "basin_ppt_tot": {
+            "long_name": "Total simulation basin area-weighted average precipitation",
+            "standard_name": "basin_ppt_tot",
+            "source": ".//output/basin_ppt_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ppt_tot.csv",
+            "georef": null
+        },
+        "basin_ppt_yr": {
+            "long_name": "Yearly basin area-weighted average precipitation",
+            "standard_name": "basin_ppt_yr",
+            "source": ".//output/basin_ppt_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ppt_yr.csv",
+            "georef": null
+        },
+        "basin_pref_flow_infil": {
+            "long_name": "Basin area-weighted average infiltration to preferential-flow reservoir storage",
+            "standard_name": "basin_pref_flow_infil",
+            "source": ".//output/basin_pref_flow_infil.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_pref_flow_infil.csv",
+            "georef": null
+        },
+        "basin_pref_stor": {
+            "long_name": "Basin area-weighted average storage in preferential-flow reservoirs",
+            "standard_name": "basin_pref_stor",
+            "source": ".//output/basin_pref_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_pref_stor.csv",
+            "georef": null
+        },
+        "basin_prefflow": {
+            "long_name": "Basin area-weighted average interflow from preferential-flow reservoirs to the stream network",
+            "standard_name": "basin_prefflow",
+            "source": ".//output/basin_prefflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_prefflow.csv",
+            "georef": null
+        },
+        "basin_pweqv": {
+            "long_name": "Basin area-weighted average snowpack water equivalent (not including glacier)",
+            "standard_name": "basin_pweqv",
+            "source": ".//output/basin_pweqv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_pweqv.csv",
+            "georef": null
+        },
+        "basin_rain": {
+            "long_name": "Basin area-weighted average rainfall",
+            "standard_name": "basin_rain",
+            "source": ".//output/basin_rain.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_rain.csv",
+            "georef": null
+        },
+        "basin_recharge": {
+            "long_name": "Basin area-weighted average recharge to GWRs",
+            "standard_name": "basin_recharge",
+            "source": ".//output/basin_recharge.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_recharge.csv",
+            "georef": null
+        },
+        "basin_runoff_ratio": {
+            "long_name": "Basin area-weighted average discharge/precipitation ratio",
+            "standard_name": "basin_runoff_ratio",
+            "source": ".//output/basin_runoff_ratio.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_runoff_ratio.csv",
+            "georef": null
+        },
+        "basin_runoff_ratio_mo": {
+            "long_name": "Monthly area-weighted average discharge/precipitation ratio",
+            "standard_name": "basin_runoff_ratio_mo",
+            "source": ".//output/basin_runoff_ratio_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_runoff_ratio_mo.csv",
+            "georef": null
+        },
+        "basin_segment_storage": {
+            "long_name": "Basin area-weighted average storage in the stream network",
+            "standard_name": "basin_segment_storage",
+            "source": ".//output/basin_segment_storage.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_segment_storage.csv",
+            "georef": null
+        },
+        "basin_slowflow": {
+            "long_name": "Basin area-weighted average interflow from gravity reservoirs to the stream network",
+            "standard_name": "basin_slowflow",
+            "source": ".//output/basin_slowflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_slowflow.csv",
+            "georef": null
+        },
+        "basin_slstor": {
+            "long_name": "Basin area-weighted average storage of gravity reservoirs",
+            "standard_name": "basin_slstor",
+            "source": ".//output/basin_slstor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_slstor.csv",
+            "georef": null
+        },
+        "basin_sm2gvr": {
+            "long_name": "Basin area-weighted average excess flow from capillary reservoirs to gravity reservoir storage",
+            "standard_name": "basin_sm2gvr",
+            "source": ".//output/basin_sm2gvr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sm2gvr.csv",
+            "georef": null
+        },
+        "basin_sm2gvr_maxin": {
+            "long_name": "Basin area-weighted average maximum excess flow from capillary reservoirs that flows to gravity reservoirs",
+            "standard_name": "basin_sm2gvr_maxin",
+            "source": ".//output/basin_sm2gvr_maxin.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sm2gvr_maxin.csv",
+            "georef": null
+        },
+        "basin_snow": {
+            "long_name": "Basin area-weighted average snowfall for basin",
+            "standard_name": "basin_snow",
+            "source": ".//output/basin_snow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_snow.csv",
+            "georef": null
+        },
+        "basin_snowcov": {
+            "long_name": "Basin area-weighted average snow-covered area",
+            "standard_name": "basin_snowcov",
+            "source": ".//output/basin_snowcov.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_snowcov.csv",
+            "georef": null
+        },
+        "basin_snowdepth": {
+            "long_name": "Basin area-weighted average snow depth",
+            "standard_name": "basin_snowdepth",
+            "source": ".//output/basin_snowdepth.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_snowdepth.csv",
+            "georef": null
+        },
+        "basin_snowevap": {
+            "long_name": "Basin area-weighted average evaporation and sublimation from snowpack (not including glacier)",
+            "standard_name": "basin_snowevap",
+            "source": ".//output/basin_snowevap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_snowevap.csv",
+            "georef": null
+        },
+        "basin_snowmelt": {
+            "long_name": "Basin area-weighted average snowmelt (not on including snow on glacier)",
+            "standard_name": "basin_snowmelt",
+            "source": ".//output/basin_snowmelt.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_snowmelt.csv",
+            "georef": null
+        },
+        "basin_snowmelt_mo": {
+            "long_name": "Monthly basin area-weighted average snowmelt",
+            "standard_name": "basin_snowmelt_mo",
+            "source": ".//output/basin_snowmelt_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_snowmelt_mo.csv",
+            "georef": null
+        },
+        "basin_snowmelt_tot": {
+            "long_name": "Total simulation basin area-weighted average snowmelt",
+            "standard_name": "basin_snowmelt_tot",
+            "source": ".//output/basin_snowmelt_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_snowmelt_tot.csv",
+            "georef": null
+        },
+        "basin_snowmelt_yr": {
+            "long_name": "Yearly basin area-weighted average snowmelt",
+            "standard_name": "basin_snowmelt_yr",
+            "source": ".//output/basin_snowmelt_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_snowmelt_yr.csv",
+            "georef": null
+        },
+        "basin_soil_lower_stor_frac": {
+            "long_name": "Basin area-weighted average fraction of soil lower zone storage of the maximum storage",
+            "standard_name": "basin_soil_lower_stor_frac",
+            "source": ".//output/basin_soil_lower_stor_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_soil_lower_stor_frac.csv",
+            "georef": null
+        },
+        "basin_soil_moist": {
+            "long_name": "Basin area-weighted average capillary reservoir storage",
+            "standard_name": "basin_soil_moist",
+            "source": ".//output/basin_soil_moist.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_soil_moist.csv",
+            "georef": null
+        },
+        "basin_soil_moist_tot": {
+            "long_name": "Basin area-weighted average total soil-zone water storage",
+            "standard_name": "basin_soil_moist_tot",
+            "source": ".//output/basin_soil_moist_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_soil_moist_tot.csv",
+            "georef": null
+        },
+        "basin_soil_rechr": {
+            "long_name": "Basin area-weighted average storage for recharge zone; upper portion of capillary reservoir where both evaporation and transpiration occurs",
+            "standard_name": "basin_soil_rechr",
+            "source": ".//output/basin_soil_rechr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_soil_rechr.csv",
+            "georef": null
+        },
+        "basin_soil_rechr_stor_frac": {
+            "long_name": "Basin area-weighted average fraction of soil recharge zone storage of the maximum storage",
+            "standard_name": "basin_soil_rechr_stor_frac",
+            "source": ".//output/basin_soil_rechr_stor_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_soil_rechr_stor_frac.csv",
+            "georef": null
+        },
+        "basin_soil_to_gw": {
+            "long_name": "Basin average excess flow to capillary reservoirs that drains to GWRs",
+            "standard_name": "basin_soil_to_gw",
+            "source": ".//output/basin_soil_to_gw.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_soil_to_gw.csv",
+            "georef": null
+        },
+        "basin_sroff": {
+            "long_name": "Basin area-weighted average surface runoff to the stream network",
+            "standard_name": "basin_sroff",
+            "source": ".//output/basin_sroff.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sroff.csv",
+            "georef": null
+        },
+        "basin_sroff_cfs": {
+            "long_name": "Basin area-weighted average surface runoff to the stream network",
+            "standard_name": "basin_sroff_cfs",
+            "source": ".//output/basin_sroff_cfs.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/basin_sroff_cfs.csv",
+            "georef": null
+        },
+        "basin_sroff_mo": {
+            "long_name": "Monthly basin area-weighted average surface runoff",
+            "standard_name": "basin_sroff_mo",
+            "source": ".//output/basin_sroff_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sroff_mo.csv",
+            "georef": null
+        },
+        "basin_sroff_tot": {
+            "long_name": "Total simulation basin area-weighted average overland flow",
+            "standard_name": "basin_sroff_tot",
+            "source": ".//output/basin_sroff_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sroff_tot.csv",
+            "georef": null
+        },
+        "basin_sroff_yr": {
+            "long_name": "Yearly basin area-weighted average overland runoff",
+            "standard_name": "basin_sroff_yr",
+            "source": ".//output/basin_sroff_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sroff_yr.csv",
+            "georef": null
+        },
+        "basin_sroffi": {
+            "long_name": "Basin area-weighted average surface runoff from impervious areas",
+            "standard_name": "basin_sroffi",
+            "source": ".//output/basin_sroffi.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sroffi.csv",
+            "georef": null
+        },
+        "basin_sroffp": {
+            "long_name": "Basin area-weighted average surface runoff from pervious areas",
+            "standard_name": "basin_sroffp",
+            "source": ".//output/basin_sroffp.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sroffp.csv",
+            "georef": null
+        },
+        "basin_ssflow": {
+            "long_name": "Basin area-weighted average interflow from gravity and preferential-flow reservoirs to the stream network",
+            "standard_name": "basin_ssflow",
+            "source": ".//output/basin_ssflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ssflow.csv",
+            "georef": null
+        },
+        "basin_ssflow_cfs": {
+            "long_name": "Interflow leaving the basin through the stream network",
+            "standard_name": "basin_ssflow_cfs",
+            "source": ".//output/basin_ssflow_cfs.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/basin_ssflow_cfs.csv",
+            "georef": null
+        },
+        "basin_ssflow_mo": {
+            "long_name": "Monthly basin area-weighted average interflow",
+            "standard_name": "basin_ssflow_mo",
+            "source": ".//output/basin_ssflow_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ssflow_mo.csv",
+            "georef": null
+        },
+        "basin_ssflow_tot": {
+            "long_name": "Total simulation basin area-weighted average interflow",
+            "standard_name": "basin_ssflow_tot",
+            "source": ".//output/basin_ssflow_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ssflow_tot.csv",
+            "georef": null
+        },
+        "basin_ssflow_yr": {
+            "long_name": "Yearly basin area-weighted average interflow",
+            "standard_name": "basin_ssflow_yr",
+            "source": ".//output/basin_ssflow_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ssflow_yr.csv",
+            "georef": null
+        },
+        "basin_ssin": {
+            "long_name": "Basin area-weighted average inflow to gravity and preferential-flow reservoir storage",
+            "standard_name": "basin_ssin",
+            "source": ".//output/basin_ssin.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ssin.csv",
+            "georef": null
+        },
+        "basin_ssstor": {
+            "long_name": "Basin weighted average gravity and preferential-flow reservoir storage",
+            "standard_name": "basin_ssstor",
+            "source": ".//output/basin_ssstor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_ssstor.csv",
+            "georef": null
+        },
+        "basin_stflow_in": {
+            "long_name": "Basin area-weighted average lateral flow entering the stream network",
+            "standard_name": "basin_stflow_in",
+            "source": ".//output/basin_stflow_in.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_stflow_in.csv",
+            "georef": null
+        },
+        "basin_stflow_mo": {
+            "long_name": "Monthly basin area-weighted average simulated streamflow",
+            "standard_name": "basin_stflow_mo",
+            "source": ".//output/basin_stflow_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_stflow_mo.csv",
+            "georef": null
+        },
+        "basin_stflow_out": {
+            "long_name": "Basin area-weighted average streamflow leaving through the stream network",
+            "standard_name": "basin_stflow_out",
+            "source": ".//output/basin_stflow_out.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_stflow_out.csv",
+            "georef": null
+        },
+        "basin_stflow_tot": {
+            "long_name": "Total simulation basin area-weighted average streamflow",
+            "standard_name": "basin_stflow_tot",
+            "source": ".//output/basin_stflow_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_stflow_tot.csv",
+            "georef": null
+        },
+        "basin_stflow_yr": {
+            "long_name": "Yearly basin area-weighted average streamflow",
+            "standard_name": "basin_stflow_yr",
+            "source": ".//output/basin_stflow_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_stflow_yr.csv",
+            "georef": null
+        },
+        "basin_storage": {
+            "long_name": "Basin area-weighted average storage in all water storage reservoirs",
+            "standard_name": "basin_storage",
+            "source": ".//output/basin_storage.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_storage.csv",
+            "georef": null
+        },
+        "basin_storvol": {
+            "long_name": "Basin area-weighted average storage volume in all water storage reservoirs",
+            "standard_name": "basin_storvol",
+            "source": ".//output/basin_storvol.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac-in",
+            "out_units": "m3",
+            "conversion_factor": 102.79015461,
+            "prms_out_file": ".//output/basin_storvol.csv",
+            "georef": null
+        },
+        "basin_surface_storage": {
+            "long_name": "Basin area-weighted average storage in all surface water storage reservoirs",
+            "standard_name": "basin_surface_storage",
+            "source": ".//output/basin_surface_storage.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_surface_storage.csv",
+            "georef": null
+        },
+        "basin_swale_et": {
+            "long_name": "Basin area-weighted average ET from swale HRUs",
+            "standard_name": "basin_swale_et",
+            "source": ".//output/basin_swale_et.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_swale_et.csv",
+            "georef": null
+        },
+        "basin_swrad": {
+            "long_name": "Basin area-weighted average shortwave radiation",
+            "standard_name": "basin_swrad",
+            "source": ".//output/basin_swrad.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/basin_swrad.csv",
+            "georef": null
+        },
+        "basin_sz2gw": {
+            "long_name": "Basin area-weighted average drainage from gravity reservoirs to GWRs",
+            "standard_name": "basin_sz2gw",
+            "source": ".//output/basin_sz2gw.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_sz2gw.csv",
+            "georef": null
+        },
+        "basin_sz_stor_frac": {
+            "long_name": "Basin area-weighted average fraction of soil zone storage of the maximum storage",
+            "standard_name": "basin_sz_stor_frac",
+            "source": ".//output/basin_sz_stor_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_sz_stor_frac.csv",
+            "georef": null
+        },
+        "basin_tcal": {
+            "long_name": "Basin area-weighted average net snowpack energy balance",
+            "standard_name": "basin_tcal",
+            "source": ".//output/basin_tcal.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/basin_tcal.csv",
+            "georef": null
+        },
+        "basin_temp": {
+            "long_name": "Basin area-weighted average air temperature",
+            "standard_name": "basin_temp",
+            "source": ".//output/basin_temp.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_temp.csv",
+            "georef": null
+        },
+        "basin_tmax": {
+            "long_name": "Basin area-weighted average maximum air temperature",
+            "standard_name": "basin_tmax",
+            "source": ".//output/basin_tmax.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_tmax.csv",
+            "georef": null
+        },
+        "basin_tmin": {
+            "long_name": "Basin area-weighted average minimum air temperature",
+            "standard_name": "basin_tmin",
+            "source": ".//output/basin_tmin.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_tmin.csv",
+            "georef": null
+        },
+        "basin_total_storage": {
+            "long_name": "Basin area-weighted average storage in all water storage reservoirs",
+            "standard_name": "basin_total_storage",
+            "source": ".//output/basin_total_storage.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/basin_total_storage.csv",
+            "georef": null
+        },
+        "basin_transp_on": {
+            "long_name": "Flag indicating whether transpiration is occurring anywhere in the basin (0=no; 1=yes)",
+            "standard_name": "basin_transp_on",
+            "source": ".//output/basin_transp_on.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/basin_transp_on.csv",
+            "georef": null
+        },
+        "canopy_covden": {
+            "long_name": "Canopy cover density for each HRU",
+            "standard_name": "canopy_covden",
+            "source": ".//output/canopy_covden.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/canopy_covden.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "cap_infil_tot": {
+            "long_name": "Infiltration and cascading interflow and Dunnian flow added to capillary reservoir storage for each HRU",
+            "standard_name": "cap_infil_tot",
+            "source": ".//output/cap_infil_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/cap_infil_tot.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_area_clos": {
+            "long_name": "Surface area of closed surface depressions based on storage volume for each HRU",
+            "standard_name": "dprst_area_clos",
+            "source": ".//output/dprst_area_clos.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac",
+            "out_units": "m2",
+            "conversion_factor": 4046.8564224,
+            "prms_out_file": ".//output/dprst_area_clos.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_area_clos_max": {
+            "long_name": "Aggregate sum of closed surface-depression storage areas of each HRU",
+            "standard_name": "dprst_area_clos_max",
+            "source": ".//output/dprst_area_clos_max.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac",
+            "out_units": "m2",
+            "conversion_factor": 4046.8564224,
+            "prms_out_file": ".//output/dprst_area_clos_max.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_area_max": {
+            "long_name": "Aggregate sum of surface-depression storage areas of each HRU",
+            "standard_name": "dprst_area_max",
+            "source": ".//output/dprst_area_max.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac",
+            "out_units": "m2",
+            "conversion_factor": 4046.8564224,
+            "prms_out_file": ".//output/dprst_area_max.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_area_open_max": {
+            "long_name": "Aggregate sum of open surface-depression storage areas of each HRU",
+            "standard_name": "dprst_area_open_max",
+            "source": ".//output/dprst_area_open_max.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac",
+            "out_units": "m2",
+            "conversion_factor": 4046.8564224,
+            "prms_out_file": ".//output/dprst_area_open_max.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_evap_hru": {
+            "long_name": "Evaporation from surface-depression storage for each HRU",
+            "standard_name": "dprst_evap_hru",
+            "source": ".//output/dprst_evap_hru.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/dprst_evap_hru.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_insroff_hru": {
+            "long_name": "Surface runoff from pervious and impervious portions into open and closed surface-depression storage for each HRU",
+            "standard_name": "dprst_insroff_hru",
+            "source": ".//output/dprst_insroff_hru.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/dprst_insroff_hru.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_seep_hru": {
+            "long_name": "Seepage from surface-depression storage to associated GWR for each HRU",
+            "standard_name": "dprst_seep_hru",
+            "source": ".//output/dprst_seep_hru.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/dprst_seep_hru.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_sroff_hru": {
+            "long_name": "Surface runoff from open surface-depression storage for each HRU",
+            "standard_name": "dprst_sroff_hru",
+            "source": ".//output/dprst_sroff_hru.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/dprst_sroff_hru.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_vol_clos": {
+            "long_name": "Storage volume in closed surface depressions for each HRU",
+            "standard_name": "dprst_vol_clos",
+            "source": ".//output/dprst_vol_clos.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac-in",
+            "out_units": "m3",
+            "conversion_factor": 102.79015461,
+            "prms_out_file": ".//output/dprst_vol_clos.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_vol_clos_frac": {
+            "long_name": "Fraction of closed surface-depression storage of the maximum storage for each HRU",
+            "standard_name": "dprst_vol_clos_frac",
+            "source": ".//output/dprst_vol_clos_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/dprst_vol_clos_frac.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_vol_frac": {
+            "long_name": "Fraction of surface-depression storage of the maximum storage for each HRU",
+            "standard_name": "dprst_vol_frac",
+            "source": ".//output/dprst_vol_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/dprst_vol_frac.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_vol_open": {
+            "long_name": "Storage volume in open surface depressions for each HRU",
+            "standard_name": "dprst_vol_open",
+            "source": ".//output/dprst_vol_open.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac-in",
+            "out_units": "m3",
+            "conversion_factor": 102.79015461,
+            "prms_out_file": ".//output/dprst_vol_open.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dprst_vol_open_frac": {
+            "long_name": "Fraction of open surface-depression storage of the maximum storage for each HRU",
+            "standard_name": "dprst_vol_open_frac",
+            "source": ".//output/dprst_vol_open_frac.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/dprst_vol_open_frac.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "dunnian_flow": {
+            "long_name": "Dunnian surface runoff that flows to the stream network for each HRU",
+            "standard_name": "dunnian_flow",
+            "source": ".//output/dunnian_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/dunnian_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "flow_headwater": {
+            "long_name": "Total flow out of headwater segments (segment_type=1)",
+            "standard_name": "flow_headwater",
+            "source": ".//output/flow_headwater.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_headwater.csv",
+            "georef": null
+        },
+        "flow_in_great_lakes": {
+            "long_name": "Total flow into model domain from Great Lakes (segment_type=10)",
+            "standard_name": "flow_in_great_lakes",
+            "source": ".//output/flow_in_great_lakes.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_in_great_lakes.csv",
+            "georef": null
+        },
+        "flow_in_nation": {
+            "long_name": "Total flow into model domain from Mexico or Canada (segment_type=4)",
+            "standard_name": "flow_in_nation",
+            "source": ".//output/flow_in_nation.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_in_nation.csv",
+            "georef": null
+        },
+        "flow_in_region": {
+            "long_name": "Total flow into region (segment_type=6)",
+            "standard_name": "flow_in_region",
+            "source": ".//output/flow_in_region.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_in_region.csv",
+            "georef": null
+        },
+        "flow_out": {
+            "long_name": "Total flow out of model domain",
+            "standard_name": "flow_out",
+            "source": ".//output/flow_out.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_out.csv",
+            "georef": null
+        },
+        "flow_out_NHM": {
+            "long_name": "Total flow out of model domain to Mexico or Canada (segment_type=5)",
+            "standard_name": "flow_out_NHM",
+            "source": ".//output/flow_out_NHM.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_out_NHM.csv",
+            "georef": null
+        },
+        "flow_out_region": {
+            "long_name": "Total flow out of region (segment_type=7)",
+            "standard_name": "flow_out_region",
+            "source": ".//output/flow_out_region.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_out_region.csv",
+            "georef": null
+        },
+        "flow_replacement": {
+            "long_name": "Total flow out from replacement flow (segment_type=3)",
+            "standard_name": "flow_replacement",
+            "source": ".//output/flow_replacement.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_replacement.csv",
+            "georef": null
+        },
+        "flow_terminus": {
+            "long_name": "Total flow to terminus segments (segment_type=9)",
+            "standard_name": "flow_terminus",
+            "source": ".//output/flow_terminus.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_terminus.csv",
+            "georef": null
+        },
+        "flow_to_great_lakes": {
+            "long_name": "Total flow to Great Lakes (segment_type=11)",
+            "standard_name": "flow_to_great_lakes",
+            "source": ".//output/flow_to_great_lakes.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_to_great_lakes.csv",
+            "georef": null
+        },
+        "flow_to_lakes": {
+            "long_name": "Total flow to lakes (segment_type=2)",
+            "standard_name": "flow_to_lakes",
+            "source": ".//output/flow_to_lakes.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_to_lakes.csv",
+            "georef": null
+        },
+        "flow_to_ocean": {
+            "long_name": "Total flow to oceans (segment_type=8)",
+            "standard_name": "flow_to_ocean",
+            "source": ".//output/flow_to_ocean.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/flow_to_ocean.csv",
+            "georef": null
+        },
+        "frac_swe": {
+            "long_name": "Fraction of maximum snow-water equivalent (snarea_thresh) on each HRU",
+            "standard_name": "frac_swe",
+            "source": ".//output/frac_swe.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/frac_swe.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "freeh2o": {
+            "long_name": "Storage of free liquid water in the snowpack on each HRU",
+            "standard_name": "freeh2o",
+            "source": ".//output/freeh2o.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/freeh2o.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "gw_in_soil": {
+            "long_name": "Drainage from capillary reservoir excess water for each GWR",
+            "standard_name": "gw_in_soil",
+            "source": ".//output/gw_in_soil.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac-in",
+            "out_units": "m3",
+            "conversion_factor": 102.79015461,
+            "prms_out_file": ".//output/gw_in_soil.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "gw_in_ssr": {
+            "long_name": "Drainage from gravity reservoir excess water for each GWR",
+            "standard_name": "gw_in_ssr",
+            "source": ".//output/gw_in_ssr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac-in",
+            "out_units": "m3",
+            "conversion_factor": 102.79015461,
+            "prms_out_file": ".//output/gw_in_ssr.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "gwres_flow": {
+            "long_name": "Groundwater discharge from each GWR to the stream network",
+            "standard_name": "gwres_flow",
+            "source": ".//output/gwres_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/gwres_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "gwres_in": {
+            "long_name": "Total inflow to each GWR from associated capillary and gravity reservoirs",
+            "standard_name": "gwres_in",
+            "source": ".//output/gwres_in.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac-in",
+            "out_units": "m3",
+            "conversion_factor": 102.79015461,
+            "prms_out_file": ".//output/gwres_in.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "gwres_sink": {
+            "long_name": "Outflow from GWRs to the groundwater sink; water is considered underflow or flow to deep aquifers and does not flow to the stream network",
+            "standard_name": "gwres_sink",
+            "source": ".//output/gwres_sink.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/gwres_sink.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "gwstor_minarea_wb": {
+            "long_name": "Storage added to each GWR when storage is less than gwstor_min",
+            "standard_name": "gwstor_minarea_wb",
+            "source": ".//output/gwstor_minarea_wb.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/gwstor_minarea_wb.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hortonian_flow": {
+            "long_name": "Hortonian surface runoff reaching stream network for each HRU",
+            "standard_name": "hortonian_flow",
+            "source": ".//output/hortonian_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hortonian_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_actet": {
+            "long_name": "Actual ET for each HRU",
+            "standard_name": "hru_actet",
+            "source": ".//output/hru_actet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_actet.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_et_yr": {
+            "long_name": "Yearly area-weighted average actual ET for each HRU",
+            "standard_name": "hru_et_yr",
+            "source": ".//output/hru_et_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_et_yr.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_frac_perv": {
+            "long_name": "Fraction of HRU that is pervious",
+            "standard_name": "hru_frac_perv",
+            "source": ".//output/hru_frac_perv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/hru_frac_perv.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_imperv": {
+            "long_name": "Area of HRU that is impervious",
+            "standard_name": "hru_imperv",
+            "source": ".//output/hru_imperv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac",
+            "out_units": "m2",
+            "conversion_factor": 4046.8564224,
+            "prms_out_file": ".//output/hru_imperv.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_impervevap": {
+            "long_name": "HRU area-weighted average evaporation from impervious area for each HRU",
+            "standard_name": "hru_impervevap",
+            "source": ".//output/hru_impervevap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_impervevap.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_intcpevap": {
+            "long_name": "HRU area-weighted average evaporation from the canopy for each HRU",
+            "standard_name": "hru_intcpevap",
+            "source": ".//output/hru_intcpevap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_intcpevap.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_lateral_flow": {
+            "long_name": "Lateral flow to stream network from each HRU",
+            "standard_name": "hru_lateral_flow",
+            "source": ".//output/hru_lateral_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_lateral_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_outflow": {
+            "long_name": "Total flow leaving each HRU",
+            "standard_name": "hru_outflow",
+            "source": ".//output/hru_outflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/hru_outflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_perv": {
+            "long_name": "Area of HRU that is pervious",
+            "standard_name": "hru_perv",
+            "source": ".//output/hru_perv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ac",
+            "out_units": "m2",
+            "conversion_factor": 4046.8564224,
+            "prms_out_file": ".//output/hru_perv.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_ppt": {
+            "long_name": "Precipitation distributed to each HRU",
+            "standard_name": "hru_ppt",
+            "source": ".//output/hru_ppt.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_ppt.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_rain": {
+            "long_name": "Rain distributed to each HRU",
+            "standard_name": "hru_rain",
+            "source": ".//output/hru_rain.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_rain.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_snow": {
+            "long_name": "Snow distributed to each HRU",
+            "standard_name": "hru_snow",
+            "source": ".//output/hru_snow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_snow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_sroffi": {
+            "long_name": "HRU area-weighted average surface runoff from impervious areas for each HRU",
+            "standard_name": "hru_sroffi",
+            "source": ".//output/hru_sroffi.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_sroffi.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_sroffp": {
+            "long_name": "HRU area-weighted average surface runoff from pervious areas for each HRU",
+            "standard_name": "hru_sroffp",
+            "source": ".//output/hru_sroffp.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_sroffp.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_storage": {
+            "long_name": "Storage for each HRU",
+            "standard_name": "hru_storage",
+            "source": ".//output/hru_storage.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/hru_storage.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "hru_streamflow_out": {
+            "long_name": "Total flow to stream network from each HRU",
+            "standard_name": "hru_streamflow_out",
+            "source": ".//output/hru_streamflow_out.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/hru_streamflow_out.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "humidity_hru": {
+            "long_name": "Relative humidity of each HRU",
+            "standard_name": "humidity_hru",
+            "source": ".//output/humidity_hru.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "percentage",
+            "out_units": "percentage",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/humidity_hru.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "iasw": {
+            "long_name": "Flag indicating that snow covered area is interpolated between previous location on curve and maximum (1), or is on the defined curve (0)",
+            "standard_name": "iasw",
+            "source": ".//output/iasw.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/iasw.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "imperv_evap": {
+            "long_name": "Evaporation from impervious area for each HRU",
+            "standard_name": "imperv_evap",
+            "source": ".//output/imperv_evap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/imperv_evap.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "imperv_stor": {
+            "long_name": "Storage on impervious area for each HRU",
+            "standard_name": "imperv_stor",
+            "source": ".//output/imperv_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/imperv_stor.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "infil": {
+            "long_name": "Infiltration to the capillary and preferential-flow reservoirs for each HRU",
+            "standard_name": "infil",
+            "source": ".//output/infil.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/infil.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "int_alb": {
+            "long_name": "Flag to indicate (1: accumulation season curve; 2: use of the melt season curve)",
+            "standard_name": "int_alb",
+            "source": ".//output/int_alb.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/int_alb.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "intcp_changeover": {
+            "long_name": "Water released from a change over of canopy cover type for each HRU",
+            "standard_name": "intcp_changeover",
+            "source": ".//output/intcp_changeover.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/intcp_changeover.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "intcp_evap": {
+            "long_name": "Evaporation from the canopy for each HRU",
+            "standard_name": "intcp_evap",
+            "source": ".//output/intcp_evap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/intcp_evap.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "intcp_form": {
+            "long_name": "Form (0=rain; 1=snow) of interception for each HRU",
+            "standard_name": "intcp_form",
+            "source": ".//output/intcp_form.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/intcp_form.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "intcp_on": {
+            "long_name": "Flag indicating interception storage for each HRU (0=no; 1=yes)",
+            "standard_name": "intcp_on",
+            "source": ".//output/intcp_on.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/intcp_on.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "intcp_stor": {
+            "long_name": "Interception storage in canopy for cover density for each HRU",
+            "standard_name": "intcp_stor",
+            "source": ".//output/intcp_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/intcp_stor.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "iso": {
+            "long_name": "Flag to indicate if time is before (1) or after (2) the day to force melt season (melt_force)",
+            "standard_name": "iso",
+            "source": ".//output/iso.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/iso.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "last_basin_stor": {
+            "long_name": "Basin area-weighted average storage in all water storage reservoirs from previous time step",
+            "standard_name": "last_basin_stor",
+            "source": ".//output/last_basin_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/last_basin_stor.csv",
+            "georef": null
+        },
+        "lso": {
+            "long_name": "Counter for tracking the number of days the snowpack is at or above 0 degrees Celsius",
+            "standard_name": "lso",
+            "source": ".//output/lso.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/lso.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "lst": {
+            "long_name": "Flag indicating whether there was new snow that was insufficient to reset the albedo curve (1) (albset_snm or albset_sna), otherwise (0)",
+            "standard_name": "lst",
+            "source": ".//output/lst.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/lst.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "mso": {
+            "long_name": "Flag to indicate if time is before (1) or after (2) the first potential day for melt season (melt_look)",
+            "standard_name": "mso",
+            "source": ".//output/mso.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/mso.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "net_ppt": {
+            "long_name": "Precipitation (rain and/or snow) that falls through the canopy for each HRU",
+            "standard_name": "net_ppt",
+            "source": ".//output/net_ppt.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/net_ppt.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "net_rain": {
+            "long_name": "Rain that falls through canopy for each HRU",
+            "standard_name": "net_rain",
+            "source": ".//output/net_rain.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/net_rain.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "net_snow": {
+            "long_name": "Snow that falls through canopy for each HRU",
+            "standard_name": "net_snow",
+            "source": ".//output/net_snow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/net_snow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "newsnow": {
+            "long_name": "Flag to indicate if new snow fell on each HRU (0=no; 1=yes)",
+            "standard_name": "newsnow",
+            "source": ".//output/newsnow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/newsnow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "obs_runoff_mo": {
+            "long_name": "Monthly measured streamflow at basin outlet",
+            "standard_name": "obs_runoff_mo",
+            "source": ".//output/obs_runoff_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/obs_runoff_mo.csv",
+            "georef": null
+        },
+        "obs_runoff_tot": {
+            "long_name": "Total simulation measured streamflow at basin outlet",
+            "standard_name": "obs_runoff_tot",
+            "source": ".//output/obs_runoff_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/obs_runoff_tot.csv",
+            "georef": null
+        },
+        "obs_runoff_yr": {
+            "long_name": "Yearly measured streamflow at basin outlet",
+            "standard_name": "obs_runoff_yr",
+            "source": ".//output/obs_runoff_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/obs_runoff_yr.csv",
+            "georef": null
+        },
+        "obsq_inches": {
+            "long_name": "Measured streamflow at specified outlet station",
+            "standard_name": "obsq_inches",
+            "source": ".//output/obsq_inches.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/obsq_inches.csv",
+            "georef": null
+        },
+        "obsq_inches_mo": {
+            "long_name": "Monthly measured streamflow at specified outlet station",
+            "standard_name": "obsq_inches_mo",
+            "source": ".//output/obsq_inches_mo.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/obsq_inches_mo.csv",
+            "georef": null
+        },
+        "obsq_inches_tot": {
+            "long_name": "Total simulation basin area-weighted average measured streamflow at specified outlet station",
+            "standard_name": "obsq_inches_tot",
+            "source": ".//output/obsq_inches_tot.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/obsq_inches_tot.csv",
+            "georef": null
+        },
+        "obsq_inches_yr": {
+            "long_name": "Yearly measured streamflow at specified outlet station",
+            "standard_name": "obsq_inches_yr",
+            "source": ".//output/obsq_inches_yr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/obsq_inches_yr.csv",
+            "georef": null
+        },
+        "orad": {
+            "long_name": "Measured or computed solar radiation on a horizontal surface",
+            "standard_name": "orad",
+            "source": ".//output/orad.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/orad.csv",
+            "georef": null
+        },
+        "orad_hru": {
+            "long_name": "Solar radiation on a horizontal surface for each HRU",
+            "standard_name": "orad_hru",
+            "source": ".//output/orad_hru.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/orad_hru.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "perv_actet": {
+            "long_name": "Actual ET from the capillary reservoir of each HRU",
+            "standard_name": "perv_actet",
+            "source": ".//output/perv_actet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/perv_actet.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pk_def": {
+            "long_name": "Heat deficit, amount of heat necessary to make the snowpack isothermal at 0 degrees Celsius",
+            "standard_name": "pk_def",
+            "source": ".//output/pk_def.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/pk_def.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pk_den": {
+            "long_name": "Density of the snowpack on each HRU",
+            "standard_name": "pk_den",
+            "source": ".//output/pk_den.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "gm/cm3",
+            "out_units": "gm/cm3",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/pk_den.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pk_depth": {
+            "long_name": "Depth of snowpack on each HRU",
+            "standard_name": "pk_depth",
+            "source": ".//output/pk_depth.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pk_depth.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pk_ice": {
+            "long_name": "Storage of frozen water in the snowpack on each HRU",
+            "standard_name": "pk_ice",
+            "source": ".//output/pk_ice.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pk_ice.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pk_precip": {
+            "long_name": "Precipitation added to snowpack for each HRU",
+            "standard_name": "pk_precip",
+            "source": ".//output/pk_precip.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pk_precip.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pk_temp": {
+            "long_name": "Temperature of the snowpack on each HRU",
+            "standard_name": "pk_temp",
+            "source": ".//output/pk_temp.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/pk_temp.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pksv": {
+            "long_name": "Snowpack water equivalent when there is new snow and in melt phase; used to interpolate between depletion curve and 100 percent on each HRU",
+            "standard_name": "pksv",
+            "source": ".//output/pksv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pksv.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pkwater_ante": {
+            "long_name": "Antecedent snowpack water equivalent on each HRU",
+            "standard_name": "pkwater_ante",
+            "source": ".//output/pkwater_ante.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pkwater_ante.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "potet": {
+            "long_name": "Potential ET for each HRU",
+            "standard_name": "potet",
+            "source": ".//output/potet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/potet.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "potet_lower": {
+            "long_name": "Potential ET in the lower zone of the capillary reservoir for each HRU",
+            "standard_name": "potet_lower",
+            "source": ".//output/potet_lower.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/potet_lower.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "potet_rechr": {
+            "long_name": "Potential ET in the recharge zone of the capillary reservoir for each HRU",
+            "standard_name": "potet_rechr",
+            "source": ".//output/potet_rechr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/potet_rechr.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pptmix": {
+            "long_name": "Flag to indicate if precipitation is a mixture of rain and snow for each HRU (0=no; 1=yes)",
+            "standard_name": "pptmix",
+            "source": ".//output/pptmix.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/pptmix.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pptmix_nopack": {
+            "long_name": "Flag indicating that a mixed precipitation event has occurred with no snowpack present on an HRU (1), otherwise (0)",
+            "standard_name": "pptmix_nopack",
+            "source": ".//output/pptmix_nopack.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/pptmix_nopack.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pref_flow": {
+            "long_name": "Interflow from the preferential-flow reservoir that flows to the stream network for each HRU",
+            "standard_name": "pref_flow",
+            "source": ".//output/pref_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pref_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pref_flow_in": {
+            "long_name": "Infiltration and flow from gravity reservoir to the preferential-flow reservoir",
+            "standard_name": "pref_flow_in",
+            "source": ".//output/pref_flow_in.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pref_flow_in.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pref_flow_infil": {
+            "long_name": "Infiltration to the preferential-flow reservoir storage for each HRU",
+            "standard_name": "pref_flow_infil",
+            "source": ".//output/pref_flow_infil.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pref_flow_infil.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pref_flow_max": {
+            "long_name": "Maximum storage of the preferential-flow reservoir for each HRU",
+            "standard_name": "pref_flow_max",
+            "source": ".//output/pref_flow_max.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pref_flow_max.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pref_flow_stor": {
+            "long_name": "Storage in preferential-flow reservoir for each HRU",
+            "standard_name": "pref_flow_stor",
+            "source": ".//output/pref_flow_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pref_flow_stor.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pref_flow_thrsh": {
+            "long_name": "Soil storage threshold defining storage between field capacity and maximum soil saturation minus preferential-flow storage",
+            "standard_name": "pref_flow_thrsh",
+            "source": ".//output/pref_flow_thrsh.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pref_flow_thrsh.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "prmx": {
+            "long_name": "Fraction of rain in a mixed precipitation event for each HRU",
+            "standard_name": "prmx",
+            "source": ".//output/prmx.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/prmx.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pss": {
+            "long_name": "Previous snowpack water equivalent plus new snow",
+            "standard_name": "pss",
+            "source": ".//output/pss.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pss.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "pst": {
+            "long_name": "While a snowpack exists, pst tracks the maximum snow water equivalent of that snowpack",
+            "standard_name": "pst",
+            "source": ".//output/pst.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/pst.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "recharge": {
+            "long_name": "Recharge to the associated GWR as sum of soil_to_gw and ssr_to_gw for each HRU",
+            "standard_name": "recharge",
+            "source": ".//output/recharge.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/recharge.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "runoff": {
+            "long_name": "Streamflow at each measurement station",
+            "standard_name": "runoff",
+            "source": ".//output/runoff.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/runoff.csv",
+            "georef": null
+        },
+        "salb": {
+            "long_name": "Days since last new snow to reset albedo for each HRU",
+            "standard_name": "salb",
+            "source": ".//output/salb.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "day",
+            "out_units": "day",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/salb.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "scrv": {
+            "long_name": "Snowpack water equivalent plus a portion of new snow on each HRU",
+            "standard_name": "scrv",
+            "source": ".//output/scrv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/scrv.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "seg_ccov": {
+            "long_name": "Area-weighted average cloud cover fraction for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seg_ccov",
+            "source": ".//output/seg_ccov.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_ccov.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_daylight": {
+            "long_name": "Hours of daylight",
+            "standard_name": "seg_daylight",
+            "source": ".//output/seg_daylight.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "hr",
+            "out_units": "hr",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_daylight.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_gwflow": {
+            "long_name": "Area-weighted average groundwater discharge for each segment from HRUs contributing flow to the segment and upstream HRUs",
+            "standard_name": "seg_gwflow",
+            "source": ".//output/seg_gwflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/seg_gwflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_humid": {
+            "long_name": "Area-weighted average relative humidity for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seg_humid",
+            "source": ".//output/seg_humid.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_humid.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_inflow": {
+            "long_name": "Total flow entering a segment",
+            "standard_name": "seg_inflow",
+            "source": ".//output/seg_inflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/seg_inflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_lateral_inflow": {
+            "long_name": "Lateral inflow entering a segment",
+            "standard_name": "seg_lateral_inflow",
+            "source": ".//output/seg_lateral_inflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/seg_lateral_inflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_melt": {
+            "long_name": "Area-weighted average snowmelt for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seg_melt",
+            "source": ".//output/seg_melt.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/seg_melt.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_potet": {
+            "long_name": "HRU area-weighted average potential ET for each segment",
+            "standard_name": "seg_potet",
+            "source": ".//output/seg_potet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/seg_potet.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_rain": {
+            "long_name": "Area-weighted average rainfall for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seg_rain",
+            "source": ".//output/seg_rain.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/seg_rain.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_shade": {
+            "long_name": "Area-weighted average shade fraction for each segment",
+            "standard_name": "seg_shade",
+            "source": ".//output/seg_shade.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_shade.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_sroff": {
+            "long_name": "Area-weighted average surface runoff for each segment from HRUs contributing flow to the segment and upstream HRUs",
+            "standard_name": "seg_sroff",
+            "source": ".//output/seg_sroff.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/seg_sroff.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_ssflow": {
+            "long_name": "Area-weighted average interflow for each segment from HRUs contributing flow to the segment and upstream HRUs",
+            "standard_name": "seg_ssflow",
+            "source": ".//output/seg_ssflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/seg_ssflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_tave_air": {
+            "long_name": "Area-weighted average air temperature for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seg_tave_air",
+            "source": ".//output/seg_tave_air.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_tave_air.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_tave_gw": {
+            "long_name": "groundwater temperature",
+            "standard_name": "seg_tave_gw",
+            "source": ".//output/seg_tave_gw.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_tave_gw.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_tave_lat": {
+            "long_name": "lateral flow temperature",
+            "standard_name": "seg_tave_lat",
+            "source": ".//output/seg_tave_lat.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_tave_lat.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_tave_sroff": {
+            "long_name": "surface runoff temperature",
+            "standard_name": "seg_tave_sroff",
+            "source": ".//output/seg_tave_sroff.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_tave_sroff.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_tave_ss": {
+            "long_name": "subsurface temperature",
+            "standard_name": "seg_tave_ss",
+            "source": ".//output/seg_tave_ss.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_tave_ss.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_tave_upstream": {
+            "long_name": "Temperature of streamflow entering each segment",
+            "standard_name": "seg_tave_upstream",
+            "source": ".//output/seg_tave_upstream.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_tave_upstream.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_upstream_inflow": {
+            "long_name": "Sum of inflow from upstream segments",
+            "standard_name": "seg_upstream_inflow",
+            "source": ".//output/seg_upstream_inflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/seg_upstream_inflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seg_width": {
+            "long_name": "Width of each segment",
+            "standard_name": "seg_width",
+            "source": ".//output/seg_width.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "m",
+            "out_units": "m",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/seg_width.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seginc_gwflow": {
+            "long_name": "Area-weighted average groundwater discharge for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seginc_gwflow",
+            "source": ".//output/seginc_gwflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/seginc_gwflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seginc_potet": {
+            "long_name": "Area-weighted average potential ET for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seginc_potet",
+            "source": ".//output/seginc_potet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/seginc_potet.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seginc_sroff": {
+            "long_name": "Area-weighted average surface runoff for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seginc_sroff",
+            "source": ".//output/seginc_sroff.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/seginc_sroff.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seginc_ssflow": {
+            "long_name": "Area-weighted average interflow for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seginc_ssflow",
+            "source": ".//output/seginc_ssflow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/seginc_ssflow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "seginc_swrad": {
+            "long_name": "Area-weighted average solar radiation for each segment from HRUs contributing flow to the segment",
+            "standard_name": "seginc_swrad",
+            "source": ".//output/seginc_swrad.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/seginc_swrad.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "segment_delta_flow": {
+            "long_name": "Cumulative flow in minus flow out for each stream segment",
+            "standard_name": "segment_delta_flow",
+            "source": ".//output/segment_delta_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/segment_delta_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/segs_all_conus_geo.shp",
+                "type": "LineString",
+                "dimid": "segid",
+                "attribute": "nhm_seg"
+            }
+        },
+        "slow_flow": {
+            "long_name": "Interflow from gravity reservoir storage that flows to the stream network for each HRU",
+            "standard_name": "slow_flow",
+            "source": ".//output/slow_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/slow_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "slow_stor": {
+            "long_name": "Storage of gravity reservoir for each HRU",
+            "standard_name": "slow_stor",
+            "source": ".//output/slow_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/slow_stor.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "slst": {
+            "long_name": "Days since last new snow for each HRU",
+            "standard_name": "slst",
+            "source": ".//output/slst.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "day",
+            "out_units": "day",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/slst.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "snow_evap": {
+            "long_name": "Evaporation and sublimation from snowpack on each HRU",
+            "standard_name": "snow_evap",
+            "source": ".//output/snow_evap.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/snow_evap.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "snow_free": {
+            "long_name": "Fraction of snow-free surface for each HRU",
+            "standard_name": "snow_free",
+            "source": ".//output/snow_free.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/snow_free.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "snowcov_area": {
+            "long_name": "Snow-covered area on each HRU prior to melt and sublimation unless snowpack depleted",
+            "standard_name": "snowcov_area",
+            "source": ".//output/snowcov_area.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/snowcov_area.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "snowcov_areasv": {
+            "long_name": "Snow cover fraction when there is new snow and in melt phase; used to interpolate between depletion curve and 100 percent on each HRU",
+            "standard_name": "snowcov_areasv",
+            "source": ".//output/snowcov_areasv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/snowcov_areasv.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "snowmelt": {
+            "long_name": "Snowmelt from snowpack on each HRU (not including snow on glacier)",
+            "standard_name": "snowmelt",
+            "source": ".//output/snowmelt.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/snowmelt.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "snsv": {
+            "long_name": "Tracks the cumulative amount of new snow until there is enough to reset the albedo curve (albset_snm or albset_sna)",
+            "standard_name": "snsv",
+            "source": ".//output/snsv.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/snsv.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "soil_lower": {
+            "long_name": "Storage in the lower zone of the capillary reservoir that is only available for transpiration for each HRU",
+            "standard_name": "soil_lower",
+            "source": ".//output/soil_lower.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/soil_lower.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "soil_lower_ratio": {
+            "long_name": "Water content ratio in the lower zone of the capillary reservoir for each HRU",
+            "standard_name": "soil_lower_ratio",
+            "source": ".//output/soil_lower_ratio.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/soil_lower_ratio.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "soil_rechr": {
+            "long_name": "Storage for recharge zone (upper portion) of the capillary reservoir that is available for both evaporation and transpiration",
+            "standard_name": "soil_rechr",
+            "source": ".//output/soil_rechr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/soil_rechr.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "soil_saturated": {
+            "long_name": "Flag set if infiltration saturates capillary reservoir (0=no, 1=yes)",
+            "standard_name": "soil_saturated",
+            "source": ".//output/soil_saturated.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/soil_saturated.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "soil_to_gw": {
+            "long_name": "Portion of excess flow to the capillary reservoir that drains to the associated GWR for each HRU",
+            "standard_name": "soil_to_gw",
+            "source": ".//output/soil_to_gw.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/soil_to_gw.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "soil_to_ssr": {
+            "long_name": "Portion of excess flow to the capillary reservoir that flows to the gravity reservoir for each HRU",
+            "standard_name": "soil_to_ssr",
+            "source": ".//output/soil_to_ssr.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/soil_to_ssr.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "solrad_tmax": {
+            "long_name": "Basin daily maximum temperature for use with solar radiation calculations",
+            "standard_name": "solrad_tmax",
+            "source": ".//output/solrad_tmax.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/solrad_tmax.csv",
+            "georef": null
+        },
+        "solrad_tmin": {
+            "long_name": "Basin daily minimum temperature for use with solar radiation calculations",
+            "standard_name": "solrad_tmin",
+            "source": ".//output/solrad_tmin.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/solrad_tmin.csv",
+            "georef": null
+        },
+        "sroff": {
+            "long_name": "Surface runoff to the stream network for each HRU",
+            "standard_name": "sroff",
+            "source": ".//output/sroff.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/sroff.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "ssr_to_gw": {
+            "long_name": "Drainage from the gravity-reservoir to the associated GWR for each HRU",
+            "standard_name": "ssr_to_gw",
+            "source": ".//output/ssr_to_gw.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/ssr_to_gw.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "ssres_flow": {
+            "long_name": "Interflow from gravity and preferential-flow reservoirs to the stream network for each HRU",
+            "standard_name": "ssres_flow",
+            "source": ".//output/ssres_flow.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/ssres_flow.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "ssres_in": {
+            "long_name": "Inflow to the gravity and preferential-flow reservoirs for each HRU",
+            "standard_name": "ssres_in",
+            "source": ".//output/ssres_in.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/ssres_in.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "ssres_stor": {
+            "long_name": "Storage in the gravity and preferential-flow reservoirs for each HRU",
+            "standard_name": "ssres_stor",
+            "source": ".//output/ssres_stor.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/ssres_stor.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "streamflow_cfs": {
+            "long_name": "Streamflow at each measurement station",
+            "standard_name": "streamflow_cfs",
+            "source": ".//output/streamflow_cfs.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "ft3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 0.0283168,
+            "prms_out_file": ".//output/streamflow_cfs.csv",
+            "georef": null
+        },
+        "streamflow_cms": {
+            "long_name": "Streamflow at each measurement station",
+            "standard_name": "streamflow_cms",
+            "source": ".//output/streamflow_cms.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "m3/s",
+            "out_units": "m3/s",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/streamflow_cms.csv",
+            "georef": null
+        },
+        "swale_actet": {
+            "long_name": "Evaporation from the gravity and preferential-flow reservoirs that exceeds sat_threshold",
+            "standard_name": "swale_actet",
+            "source": ".//output/swale_actet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/swale_actet.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "swrad": {
+            "long_name": "Shortwave radiation distributed to each HRU",
+            "standard_name": "swrad",
+            "source": ".//output/swrad.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/swrad.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "tavgc": {
+            "long_name": "Average air temperature distributed to each HRU",
+            "standard_name": "tavgc",
+            "source": ".//output/tavgc.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/tavgc.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "tavgf": {
+            "long_name": "Average air temperature distributed to each HRU",
+            "standard_name": "tavgf",
+            "source": ".//output/tavgf.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Fahrenheit",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/tavgf.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "tcal": {
+            "long_name": "Net snowpack energy balance on each HRU",
+            "standard_name": "tcal",
+            "source": ".//output/tcal.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "Ly/d",
+            "out_units": "w/m2",
+            "conversion_factor": 0.484583,
+            "prms_out_file": ".//output/tcal.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "tmaxc": {
+            "long_name": "Maximum air temperature distributed to each HRU",
+            "standard_name": "tmaxc",
+            "source": ".//output/tmaxc.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/tmaxc.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "tmaxf": {
+            "long_name": "Maximum air temperature distributed to each HRU",
+            "standard_name": "tmaxf",
+            "source": ".//output/tmaxf.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Fahrenheit",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/tmaxf.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "tminc": {
+            "long_name": "Minimum air temperature distributed to each HRU",
+            "standard_name": "tminc",
+            "source": ".//output/tminc.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Celsius",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/tminc.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "tminf": {
+            "long_name": "Minimum air temperature distributed to each HRU",
+            "standard_name": "tminf",
+            "source": ".//output/tminf.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "degree_Fahrenheit",
+            "out_units": "degree_Celsius",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/tminf.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "transp_on": {
+            "long_name": "Flag indicating whether transpiration is occurring (0=no; 1=yes)",
+            "standard_name": "transp_on",
+            "source": ".//output/transp_on.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "1",
+            "out_units": "1",
+            "conversion_factor": 1.0,
+            "prms_out_file": ".//output/transp_on.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "unused_potet": {
+            "long_name": "Unsatisfied potential evapotranspiration",
+            "standard_name": "unused_potet",
+            "source": ".//output/unused_potet.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/unused_potet.csv",
+            "georef": {
+                "map": "/work/markstro/intern_demo/GIS_Data/hrus_all_conus_geo.shp",
+                "type": "Polygon",
+                "dimid": "hruid",
+                "attribute": "nhm_id"
+            }
+        },
+        "watbal_sum": {
+            "long_name": "Water balance aggregate",
+            "standard_name": "watbal_sum",
+            "source": ".//output/watbal_sum.csv",
+            "fill_value": "9.969209968386869e+36",
+            "format": "%.1f",
+            "in_units": "in",
+            "out_units": "mm",
+            "conversion_factor": 25.4,
+            "prms_out_file": ".//output/watbal_sum.csv",
+            "georef": null
+        }
+    },
+    "feature_georef": {
+        "hru_lat": {
+            "file": ".//input/hru_lat.txt",
+            "dimid": "hruid",
+            "long_name": "Latitude of HRU centroid",
+            "units": "degrees_north",
+            "standard_name": "hru_latitude",
+            "fill_value": "9.969209968386869e+36"
+        },
+        "hru_lon": {
+            "file": ".//input/hru_lon.txt",
+            "dimid": "hruid",
+            "long_name": "Longitude of HRU centroid",
+            "units": "degrees_east",
+            "standard_name": "hru_longitude",
+            "fill_value": "9.969209968386869e+36"
+        },
+        "seg_lat": {
+            "file": ".//input/lat_seg.txt",
+            "dimid": "segid",
+            "long_name": "Latitude of stream segment centroid",
+            "units": "degrees_north",
+            "standard_name": "segment_latitude",
+            "fill_value": "9.969209968386869e+36"
+        },
+        "seg_lon": {
+            "file": ".//input/lon_seg.txt",
+            "dimid": "segid",
+            "long_name": "Longitude of stream segment centroid",
+            "units": "degrees_east",
+            "standard_name": "segment_longitude",
+            "fill_value": "9.969209968386869e+36"
+        }
+    }
+}
