@@ -19,6 +19,15 @@ import logging
 import sys
 import os
 
+# Configure logging at the very beginning
+logging.basicConfig(
+    level=logging.INFO,  # Set to INFO to capture INFO, WARNING, ERROR, and CRITICAL
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)  # Ensure logs are sent to stdout
+    ]
+)
+
 logger = logging.getLogger(__name__)
 
 def parse_arguments():
@@ -153,7 +162,7 @@ def create_netcdf_file(var_name, df, var_meta, georef, output_path):
     except ValueError:
         conversion_factor = 1.0
         logger.warning(f"Invalid conversion_factor '{conversion_factor_str}' for variable '{var_name}'. Using 1.0.")
-    data = data * conversion_factor
+    data = data.astype(float) * conversion_factor
 
     # Determine the number of features
     nfeat = data.shape[1]

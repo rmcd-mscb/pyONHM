@@ -8,13 +8,13 @@
             "name": "Python Debugger: out2ncf",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/pyonhm/out2ncf/out2ncf_embedded.py",
+            "program": "${workspaceFolder}/pyonhm/out2ncf/out2ncf.py",
             "console": "integratedTerminal",
             "args": [
                 "--output-path",
                 "${workspaceFolder}/daily/output",
                 "--root-path",
-                "/mnt/d/oNHM/NHM_PRMS_UC_GF_1_1/"
+                "/mnt/d/oNHM/NHM_PRMS_CONUS_GF_1_1/"
             ]
         },
         {
@@ -122,12 +122,12 @@
                 // "pyonhm",
                 "run-operational",
                 "--env-file",
-                "nhm_uc.env",
+                "nhm_conus.env",
                 "--num-days",
                 "2",
                 "--test"
             ],
-            "envFile": "${workspaceFolder}/nhm_uc.env", // Adjust if your env file is located elsewhere
+            "envFile": "${workspaceFolder}/nhm_conus.env", // Adjust if your env file is located elsewhere
             "cwd": "${workspaceFolder}" // Sets the current working directory
         },
         {

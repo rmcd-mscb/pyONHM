@@ -187,8 +187,8 @@ class DockerManager:
             command=command,
             volumes=self.volume_binding,
             environment=["TERM=dumb"],
-            remove=False,
-            detach=True,
+            remove=True,
+            detach=False,
         )
         
         try:
@@ -233,8 +233,8 @@ class DockerManager:
                 volumes=self.volume_binding,
                 working_dir=working_dir,
                 environment=["TERM=dumb"],
-                remove=False,
-                detach=True,
+                remove=True,
+                detach=False,
             )
             for log in container.logs(stream=True):
                 logger.info(log.decode("utf-8").strip())
@@ -481,18 +481,19 @@ class DockerManager:
 
         # Run the container to get the latest restart date
         try:
-            container = self.client.containers.run(
+            logs = self.client.containers.run(
                 image="nhmusgs/base",
                 command=command,
                 volumes=self.volume_binding,
                 working_dir=f"{project_root}/daily/restart" if mode == "op" else f"{project_root}/forecast/restart",
                 environment={"TERM": "dumb"},
-                detach=True,
+                detach=False,
+                remove=True,
                 tty=True,
             )
             
-            restart_date = container.logs().decode("utf-8").strip()
-            container.remove()  # Clean up the container
+            restart_date = logs.decode("utf-8").strip()
+            # container.remove()  # Clean up the container
 
             if not restart_date:
                 raise FileNotFoundError("No .restart files found in the specified directory.")
@@ -536,21 +537,18 @@ class DockerManager:
             self.manage_container(container_name=container_name, action="stop_remove")
         try:
             logger.info(f"Running container '{container_name}' from image '{image}'...")
-            container = self.client.containers.run(
+            logs = self.client.containers.run(
                 image=image,
                 name=container_name,
                 environment=env_vars,
                 volumes=self.volume_binding,
-                detach=True,
+                detach=False,
+                remove=True
             )
-            for log in container.logs(stream=True):
+            logger.info(f"Container {container_name} finished execution.")
+            for log in logs.splitlines():
                 logger.info(log.decode("utf-8").strip())
-            container.reload()  # Reload the container's state
-            if container.status == "exited":
-                exit_code = container.attrs['State']['ExitCode']
-                if exit_code != 0:
-                    logger.error(f"Container '{container_name}' exited with error code {exit_code}.")
-                    return False
+            
             return True
         except (ContainerError, ImageNotFound, APIError) as e:
             logger.error(f"An error occurred: {e}")
@@ -570,7 +568,8 @@ class DockerManager:
             name=container_name,
             environment=env_vars,
             volumes=self.volume_binding,
-            detach=True,
+            detach=False,
+            remove=True
         )
         for log in container.logs(stream=True):
             print(log.decode("utf-8").strip())
@@ -652,7 +651,8 @@ class DockerManager:
             command=command,
             volumes=self.volume_binding,
             # environment={"TERM": "dumb"},
-            detach=True,
+            detach=False,
+            remove=True,
             tty=True,
         )
         output = container.logs().decode("utf-8").strip()

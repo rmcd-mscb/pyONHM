@@ -55,6 +55,15 @@ from cyclopts import App, Group, Parameter, validators
 
 app = App()
 
+# Configure logging at the very beginning
+logging.basicConfig(
+    level=logging.INFO,  # Set to INFO to capture INFO, WARNING, ERROR, and CRITICAL
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.StreamHandler(sys.stdout)  # Ensure logs are sent to stdout
+    ]
+)
+
 logger = logging.getLogger(__name__)
 
 def read(nc_fn):
