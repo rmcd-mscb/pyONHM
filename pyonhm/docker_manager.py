@@ -106,6 +106,24 @@ class DockerManager:
         except Exception as e:
             logger.exception("Failed to build Docker image.")
             return False
+    def cleanup_existing_container(self, container_name):
+        try:
+            existing_container = self.client.containers.get(container_name)
+            if existing_container.status in ['running', 'paused']:
+                logger.info(f"Stopping existing container '{container_name}'...")
+                existing_container.stop(timeout=10)
+                logger.info(f"Container '{container_name}' stopped.")
+            logger.info(f"Removing existing container '{container_name}'...")
+            existing_container.remove()
+            logger.info(f"Container '{container_name}' removed.")
+        except docker.errors.NotFound:
+            logger.info(f"No existing container named '{container_name}' found. Proceeding.")
+        except docker.errors.APIError as e:
+            logger.error(f"Failed to cleanup container '{container_name}': {e}")
+            raise e
+        except Exception as e:
+            logger.exception(f"Unexpected error during cleanup of container '{container_name}': {e}")
+            raise e
 
     def container_exists_and_running(self, container_name):
         """
@@ -175,28 +193,33 @@ class DockerManager:
             Exception: If an error occurs while checking for data existence.
         """
         logger.info(f"Checking if data at {check_path} is downloaded...")
-        exists, _running = self.container_exists_and_running(container_name)
-        if exists:
-            # Handle the exited container. You can either restart it or remove and recreate it.
-            self.manage_container(container_name=container_name, action="stop_remove")
+        # exists, _running = self.container_exists_and_running(container_name)
+        # if exists:
+        #     # Handle the exited container. You can either restart it or remove and recreate it.
+        #     self.manage_container(container_name=container_name, action="stop_remove")
 
         command = ["sh", "-c", f"test -e {check_path} && echo 0 || echo 1"]
-        container = self.client.containers.run(
-            image=image,
-            name=container_name,
-            command=command,
-            volumes=self.volume_binding,
-            environment=["TERM=dumb"],
-            remove=True,
-            detach=False,
-        )
-        
         try:
-            _result = container.wait()
-            status_code = container.logs().decode("utf-8").strip()
+            self.cleanup_existing_container(container_name=container_name)
+            logs = self.client.containers.run(
+                image=image,
+                name=container_name,
+                command=command,
+                volumes=self.volume_binding,
+                environment=["TERM=dumb"],
+                remove=True,
+                detach=False,
+            )
+            status_code = logs.decode("utf-8").strip()
+        # try:
+        #     _result = container.wait()
+        #     status_code = container.logs().decode("utf-8").strip()
             return status_code == "0"  # Returns True if data exists
+        except (ContainerError, ImageNotFound, APIError) as e:
+            logger.error(f"An error occurred: {e}")
+            return False
         except Exception as e:
-            logger.error(f"Error while checking data existence: {e}")
+            logger.exception(f"An unexpected error occurred while running the container: {e}")
             return False
 
 
@@ -220,13 +243,11 @@ class DockerManager:
             Exception: If there is an error while running the container or executing the download commands.
         """
         logger.info(f"Data needs to be downloaded at {download_path}")
-        exists, _running = self.container_exists_and_running(container_name)
-        if exists:
-            # Handle the exited container. You can either restart it or remove and recreate it.
-            self.manage_container(container_name=container_name, action="stop_remove")
 
         try:
-            container = self.client.containers.run(
+            self.cleanup_existing_container(container_name=container_name)
+
+            logs = self.client.containers.run(
                 image=image,
                 name=container_name,
                 command=f"sh -c '{download_commands}'",
@@ -236,7 +257,8 @@ class DockerManager:
                 remove=True,
                 detach=False,
             )
-            for log in container.logs(stream=True):
+            logger.info(f"Container {container_name} finished loading data at {download_path}.")
+            for log in logs.splitlines():
                 logger.info(log.decode("utf-8").strip())
 
             container.reload()
@@ -459,28 +481,11 @@ class DockerManager:
 
         command = "bash -c 'ls -1 *.restart | sort | tail -1 | cut -f1 -d .'"
         project_root = env_vars.get("PROJECT_ROOT")
-        
-        # Check for any running containers associated with the image 'nhmusgs/base'
-        try:
-            running_containers = self.client.containers.list(all=True)
-            for container in running_containers:
-                # Adjust the check to handle the full tag format
-                if any(tag.startswith("nhmusgs") for tag in container.image.tags):
-                    logger.info(f"Stopping running container '{container.name}' associated with image 'nhmusgs/base'.")
-                    container.stop()
-                    # Wait until the container is fully stopped
-                    container.reload()  # Reload the container's attributes to get the latest status
-                    while container.status != "exited":
-                        logger.info(f"Waiting for container '{container.name}' to stop...")
-                        time.sleep(1)
-                        container.reload()  # Check the status again
-                    container.remove(force=True)
-                    logger.info(f"Container '{container.name}' stopped and removed.")
-        except Exception as e:
-            logger.error(f"Error checking or stopping running containers: {e}")
 
         # Run the container to get the latest restart date
         try:
+            # Check for any running containers associated with the image 'nhmusgs/base'
+            self.cleanup_existing_container("nhmusgs/base")
             logs = self.client.containers.run(
                 image="nhmusgs/base",
                 command=command,
@@ -491,25 +496,19 @@ class DockerManager:
                 remove=True,
                 tty=True,
             )
-            
-            restart_date = logs.decode("utf-8").strip()
-            # container.remove()  # Clean up the container
 
-            if not restart_date:
+            if restart_date := logs.decode("utf-8").strip():
+                return restart_date
+
+            else:
                 raise FileNotFoundError("No .restart files found in the specified directory.")
 
-            return restart_date
-
-        except docker.errors.ContainerError as e:
-            logger.error(f"Container error occurred: {e}")
-        except docker.errors.ImageNotFound as e:
-            logger.error(f"Docker image not found: {e}")
-        except docker.errors.APIError as e:
-            logger.error(f"Docker API error: {e}")
+        except (ContainerError, ImageNotFound, APIError) as e:
+            logger.error(f"An error occurred: {e}")
+            return False
         except Exception as e:
-            logger.error(f"An unexpected error occurred while running the container: {e}")
-
-        return None 
+            logger.exception(f"An unexpected error occurred while running the container: {e}")
+            return False
 
 
     def run_container(self, image, container_name, env_vars) -> bool:
@@ -531,11 +530,8 @@ class DockerManager:
             ImageNotFound: If the specified image does not exist.
             APIError: If there is an error with the Docker API.
         """
-        exists, _running = self.container_exists_and_running(container_name)
-        if exists:
-            # Handle the exited container. You can either restart it or remove and recreate it.
-            self.manage_container(container_name=container_name, action="stop_remove")
         try:
+            self.cleanup_existing_container(container_name=container_name)
             logger.info(f"Running container '{container_name}' from image '{image}'...")
             logs = self.client.containers.run(
                 image=image,
@@ -548,7 +544,6 @@ class DockerManager:
             logger.info(f"Container {container_name} finished execution.")
             for log in logs.splitlines():
                 logger.info(log.decode("utf-8").strip())
-            
             return True
         except (ContainerError, ImageNotFound, APIError) as e:
             logger.error(f"An error occurred: {e}")
@@ -556,23 +551,6 @@ class DockerManager:
         except Exception as e:
             logger.exception("An unexpected error occurred.")
             return False
-
-    def run_container_old(self, image, container_name, env_vars):
-        exists, _running = self.container_exists_and_running(container_name)
-        if exists:
-            # Handle the exited container. You can either restart it or remove and recreate it.
-            self.manage_container(container_name=container_name, action="stop_remove")
-        print(f"Running container '{container_name}' from image '{image}'...")
-        container = self.client.containers.run(
-            image=image,
-            name=container_name,
-            environment=env_vars,
-            volumes=self.volume_binding,
-            detach=False,
-            remove=True
-        )
-        for log in container.logs(stream=True):
-            print(log.decode("utf-8").strip())
 
     def build_images(self, no_cache: bool = False):
         """
@@ -646,7 +624,7 @@ class DockerManager:
 
         # Bash command to list directories matching the date pattern
         command = f"bash -c 'find {path} -maxdepth 1 -type d | grep -E \"/[0-9]{{4}}-[0-9]{{2}}-[0-9]{{2}}$\"'"
-        container = self.client.containers.run(
+        logs = self.client.containers.run(
             image="nhmusgs/base",
             command=command,
             volumes=self.volume_binding,
@@ -655,10 +633,7 @@ class DockerManager:
             remove=True,
             tty=True,
         )
-        output = container.logs().decode("utf-8").strip()
-        container.remove()  # Clean up the container
-
-        # return [line.split('/')[-1] for line in output.split('\n')]
+        output = logs.decode("utf-8").strip()
         return [line.strip().split('/')[-1] for line in output.split('\n')]
 
     def forecast_run(
@@ -888,38 +863,38 @@ class DockerManager:
         logger.info("Starting operational containers...")
 
         try:
-            self.run_container_with_check(image="nhmusgs/gridmetetl:0.30", container_name="gridmetetl", env_vars=env_vars)
+            self.run_container(image="nhmusgs/gridmetetl:0.30", container_name="gridmetetl", env_vars=env_vars)
 
             ncf2cbh_vars = utils.get_ncf2cbh_opvars(env_vars=env_vars, mode="op")
-            self.run_container_with_check(image="nhmusgs/ncf2cbh", container_name="ncf2cbh", env_vars=ncf2cbh_vars)
+            self.run_container(image="nhmusgs/ncf2cbh", container_name="ncf2cbh", env_vars=ncf2cbh_vars)
 
             prms_env = utils.get_prms_run_env(env_vars=env_vars, restart_date=restart_date)
-            self.run_container_with_check(image="nhmusgs/prms:5.2.1", container_name="prms", env_vars=prms_env)
+            self.run_container(image="nhmusgs/prms:5.2.1", container_name="prms", env_vars=prms_env)
 
             out2ncf_vars = utils.get_out2ncf_vars(env_vars=env_vars, mode="op")
-            self.run_container_with_check(image="nhmusgs/out2ncf", container_name="out2ncf", env_vars=out2ncf_vars)
+            self.run_container(image="nhmusgs/out2ncf", container_name="out2ncf", env_vars=out2ncf_vars)
 
             prms_restart_env = utils.get_prms_restart_env(env_vars=env_vars)
-            self.run_container_with_check(image="nhmusgs/prms:5.2.1", container_name="prms", env_vars=prms_restart_env)
+            self.run_container(image="nhmusgs/prms:5.2.1", container_name="prms", env_vars=prms_restart_env)
 
         except Exception as e:
             logger.error(f"An error occurred during container operations: {e}")
             sys.exit(1)
 
-    def run_container_with_check(self, image, container_name, env_vars):
-        # Check if the container is running
-        try:
-            container = self.client.containers.get(container_name)
-            if container.status == 'running':
-                logger.info(f"Stopping running container '{container_name}' before proceeding.")
-                container.stop()
-        except docker.errors.NotFound:
-            logger.info(f"Container '{container_name}' not found. Proceeding to run it.")
+    # def run_container_with_check(self, image, container_name, env_vars):
+    #     # Check if the container is running
+    #     # try:
+    #     #     container = self.client.containers.get(container_name)
+    #     #     if container.status == 'running':
+    #     #         logger.info(f"Stopping running container '{container_name}' before proceeding.")
+    #     #         container.stop()
+    #     # except docker.errors.NotFound:
+    #     #     logger.info(f"Container '{container_name}' not found. Proceeding to run it.")
 
-        success = self.run_container(image=image, container_name=container_name, env_vars=env_vars)
-        if not success:
-            logger.error(f"Failed to run container '{container_name}'. Exiting...")
-            sys.exit(1)
+    #     success = self.run_container(image=image, container_name=container_name, env_vars=env_vars)
+    #     if not success:
+    #         logger.error(f"Failed to run container '{container_name}'. Exiting...")
+    #         sys.exit(1)
     def update_restart_containers(self, env_vars, restart_date=None):
         """Update restart file to current day.
 
@@ -936,16 +911,16 @@ class DockerManager:
         logger.info("Updating restart containers...")
 
         try:
-            self.run_container_with_check(image="nhmusgs/gridmetetl:0.30", container_name="gridmetetl", env_vars=env_vars)
+            self.run_container(image="nhmusgs/gridmetetl:0.30", container_name="gridmetetl", env_vars=env_vars)
 
             ncf2cbh_vars = utils.get_ncf2cbh_opvars(env_vars=env_vars, mode="op")
-            self.run_container_with_check(image="nhmusgs/ncf2cbh", container_name="ncf2cbh", env_vars=ncf2cbh_vars)
+            self.run_container(image="nhmusgs/ncf2cbh", container_name="ncf2cbh", env_vars=ncf2cbh_vars)
 
             prms_restart_env = utils.get_prms_restart_env(env_vars=env_vars)
-            self.run_container_with_check(image="nhmusgs/prms:5.2.1", container_name="prms", env_vars=prms_restart_env)
+            self.run_container(image="nhmusgs/prms:5.2.1", container_name="prms", env_vars=prms_restart_env)
 
             out2ncf_vars = utils.get_out2ncf_vars(env_vars=env_vars, mode="op")
-            self.run_container_with_check(image="nhmusgs/out2ncf", container_name="out2ncf", env_vars=out2ncf_vars)
+            self.run_container(image="nhmusgs/out2ncf", container_name="out2ncf", env_vars=out2ncf_vars)
 
         except Exception as e:
             logger.error(f"An error occurred during the update of restart containers: {e}")
