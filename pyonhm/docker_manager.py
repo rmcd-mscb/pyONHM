@@ -260,13 +260,6 @@ class DockerManager:
             logger.info(f"Container {container_name} finished loading data at {download_path}.")
             for log in logs.splitlines():
                 logger.info(log.decode("utf-8").strip())
-
-            container.reload()
-            if container.status == "exited":
-                exit_code = container.attrs['State']['ExitCode']
-                if exit_code != 0:
-                    logger.error(f"Container '{container_name}' exited with error code {exit_code}.")
-                    return False
             return True
         except Exception as e:
             logger.exception(f"Failed to run container '{container_name}' for download.")
@@ -533,13 +526,16 @@ class DockerManager:
         try:
             self.cleanup_existing_container(container_name=container_name)
             logger.info(f"Running container '{container_name}' from image '{image}'...")
+            p_remove = True
+            if container_name == "ncf2cbh":
+                p_remove = False
             logs = self.client.containers.run(
                 image=image,
                 name=container_name,
                 environment=env_vars,
                 volumes=self.volume_binding,
                 detach=False,
-                remove=True
+                remove=p_remove
             )
             logger.info(f"Container {container_name} finished execution.")
             for log in logs.splitlines():
@@ -682,7 +678,7 @@ class DockerManager:
         logger.info(f"{method} forecast ready: {state}, forecast start date: {forecast_run_date}")
 
         if method == 'median':
-            med_vars = utils.get_ncf2cbh_opvars(env_vars=env_vars, mode=method, ensemble=0)
+            med_vars = utils.get_ncf2cbh_opvars(env_vars=env_vars, mode=method)
             success = self.run_container(
                 image="nhmusgs/ncf2cbh", container_name="ncf2cbh", env_vars=med_vars
             )
@@ -1118,7 +1114,7 @@ class DockerManager:
 
         success = self.run_container(
             image="nhmusgs/cfsv2etl",
-            container_name="cfsv2_env",
+            container_name="cfsv2etl",
             env_vars=cfsv2_env,
         )
         

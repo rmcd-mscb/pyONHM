@@ -122,7 +122,7 @@
                 // "pyonhm",
                 "run-operational",
                 "--env-file",
-                "nhm_conus.env",
+                "nhm_uc.env",
                 "--num-days",
                 "2",
                 "--test"
@@ -140,9 +140,9 @@
                 // "pyonhm",
                 "run-sub-seasonal",
                 "--env-file",
-                "nhm_uc.env",
+                "nhm_conus.env",
                 "--method",
-                "ensemble"
+                "median"
             ],
             "envFile": "${workspaceFolder}/nhm_uc.env", // Adjust if your env file is located elsewhere
             "cwd": "${workspaceFolder}" // Sets the current working directory

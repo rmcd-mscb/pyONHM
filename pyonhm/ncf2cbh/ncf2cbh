@@ -9,7 +9,8 @@
 # Authors - Richard McDonald, Steven Markstrom,
 #           Andrew Halper
 #
-
+set -e  # Exit immediately if a command exits with a non-zero status
+set -x  # Print commands and their arguments as they are executed
 echo "Input path is $NCF2CBH_IDIR"
 echo "Start date is $NCF2CBH_START_DATE"
 echo "File prefix is $NCF2CBH_PREFIX"
@@ -27,4 +28,11 @@ echo "Combined argument is $COMBINED_ARG"
     "--prefix" "$COMBINED_ARG" \
     "--mode" "$NCF2CBH_MODE" \
     "--root-path" "$NCF2CBH_ROOT_DIR" \
-    "--ensemble" "$NCF2CBH_ENS_NUM"
+    "--ensemble" "$NCF2CBH_ENS_NUM" 
+     
+# Capture the exit status of the Python script
+PYTHON_EXIT_CODE=$?
+echo "Python script exited with code $PYTHON_EXIT_CODE"
+
+# Exit with the Python script's exit code
+exit $PYTHON_EXIT_CODE
