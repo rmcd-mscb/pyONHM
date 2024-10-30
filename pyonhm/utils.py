@@ -117,7 +117,7 @@ def env_update_dates_for_testing(restart_date, env_vars, num_days):
     env_vars["START_DATE"] = start_date
 
     # Setting END_DATE to START_DATE + num_days
-    end_date = adjust_date_str(start_date, num_days)
+    end_date = adjust_date_str(start_date, num_days-1)
     env_vars["END_DATE"] = end_date
 
     # Setting SAVE_RESTART_DATE if it's not set
