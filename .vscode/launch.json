@@ -161,6 +161,19 @@
             ],
             "envFile": "${workspaceFolder}/nhm_conus.env", // Adjust if your env file is located elsewhere
             "cwd": "${workspaceFolder}" // Sets the current working directory
+        },
+        {
+            "name": "Python Debugger: build images",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/pyonhm/docker_manager.py",
+            "console": "integratedTerminal",
+            "args": [
+                // "pyonhm",
+                "build-images"
+            ],
+            "envFile": "${workspaceFolder}/nhm_conus.env", // Adjust if your env file is located elsewhere
+            "cwd": "${workspaceFolder}" // Sets the current working directory
         }
     ]
 }

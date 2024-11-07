@@ -1,11 +1,7 @@
 # # NHM Base Image
 #
-# This is the base image used to build the NHM pipeline. The base
-# image is not necessary in a production system, and it is not
-# necessary to push it to Docker Hub.
-#
-# The base image for the NHM base image is
-# [docker-miniconda](https://hub.docker.com/r/continuumio/miniconda3).
+# This is the base image used to build the NHM pipeline.
+
 FROM condaforge/miniforge3:latest
 
 LABEL maintainer_1="rmcd@usgs.gov" \
@@ -38,30 +34,36 @@ LABEL maintainer_1="rmcd@usgs.gov" \
 #        - [vim](https://packages.debian.org/bullseye/vim)
 #
 
+# Create nhm group and user first
+RUN groupadd -g 1000 nhm && useradd -u 1000 -g nhm -ms /bin/bash nhm
+
+# Ensure the NHM_SOURCE_DIR exists and has correct permissions
+RUN mkdir -p /usr/local/src && chown -R nhm:nhm /usr/local/src
+
 # Prevent halting due to tzdata, interactive package config. See
 # https://serverfault.com/questions/84521/automate-dpkg-reconfigure-tzdata
 RUN ln -fs /usr/share/zoneinfo/UTC /etc/localtime
 
+# Additional Packages and Configuration
 RUN apt-get update --fix-missing && \
     apt-get -q -y install \
-	    apt-utils \
-	    ca-certificates \
-	    dialog \
-	    file \
-	    gcc \
-	    gfortran \
-	    libhdf5-mpich-dev \
-	    libnetcdf-dev \
-	    libnetcdff-dev \
-	    make \
-	    procps \
-	    unzip \
-        vim
-RUN apt-get autoclean && apt-get purge
-## Copy the certificate to the contain (https://apps-int.usgs.gov/ssl/DOIRootCA2.cer)
-COPY DOIRootCA2.cer /usr/local/share/ca-certificates/DOIRootCA2.crt
+        apt-utils \
+        ca-certificates \
+        dialog \
+        file \
+        gcc \
+        gfortran \
+        libhdf5-mpich-dev \
+        libnetcdf-dev \
+        libnetcdff-dev \
+        make \
+        procps \
+        unzip \
+        vim && \
+    apt-get autoclean && apt-get purge
 
-# Update CA certificates
+# Copy and update certificates
+COPY DOIRootCA2.cer /usr/local/share/ca-certificates/DOIRootCA2.crt
 RUN update-ca-certificates
 
 # Set environment variables for SSL certificates
@@ -78,16 +80,7 @@ RUN echo "SSL_CERT_FILE=${SSL_CERT_FILE}" && \
     echo "GIT_SSL_CAINFO=${GIT_SSL_CAINFO}" && \
     echo "REQUESTS_CA_BUNDLE=${REQUESTS_CA_BUNDLE}"
 
-# # ## Conda Installation
-# #
-# # The base image Conda packages are updated to the most recent
-# # versions available.
-# # ### Additional Conda Packages
-# #
-# # Additional specific versions of Conda packages are required for
-# # Python support in the gridmetetl, cfsv2etl, ncf2cbh,
-# # and out2ncf images.
-# # Combining mamba install and pip install in a single RUN command
+# Conda and Python Setup
 RUN mamba update -n base mamba -y && \
     mamba install -n base -c conda-forge -y \
         python=3.11 \
@@ -104,8 +97,7 @@ RUN mamba update -n base mamba -y && \
         xarray \
         xmltodict \
         pint-xarray && \
-    mamba clean -a && \
-    /bin/bash -c "source activate base"
+    mamba clean -a
 
 # # ## Source Code Location
 # #
@@ -116,22 +108,10 @@ ENV NHM_SOURCE_DIR=/usr/local/src
 # Install gridmet-etl into conda base environment for use with climage ETL processes.
 RUN pip install -vvv --trusted-host pypi.org --trusted-host files.pythonhosted.org git+https://github.com/rmcd-mscb/gridmet-etl.git
 
-# # ## gridmetetl Directory to store geospatial fabric and create /nhm directory
-#
-# The gridmetetl output directory is `/nhm/gridmetetl/Output`.
-RUN mkdir -p /nhm/gridmetetl
-# ## NHM User Account
-#
-# The NHM user account can be set by the `USER` environment variable
-# in the base image.
+# Define source directory and user environment
+ENV NHM_SOURCE_DIR=/usr/local/src
 ENV USER=nhm
-RUN useradd -ms /bin/bash $USER
-RUN chown -R nhm:nhm /nhm
-RUN chmod -R 755 /nhm
 ENV HOMEDIR=/home/$USER
 
-# ## Shared Volume
-#
-# Pipeline I/O occurs on the `/nhm` shared volume. `/nhm/` is mounted
-# on all containers.
-VOLUME ["/nhm"]
+# Set default user to nhm
+USER nhm
