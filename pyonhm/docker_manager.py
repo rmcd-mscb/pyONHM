@@ -43,18 +43,23 @@ def validate_model(type_, value: str):
         raise  ValueError(f"Invalid --method: {value}. Expected one of {valid_method}")
 
 class DockerManager:
-    def __init__(self):
+    def __init__(self, bind_path=None):
         try:
             self.client = docker.from_env()
-            self.volume_binding = {"nhm_nhm": {"bind": "/nhm", "mode": "rw"}}
+            self.bind_path = bind_path
+
+            # Use a user-defined bind path, defaulting to ~/nhm_bind if not provided
+            if self.bind_path is None:
+                self.bind_path = os.path.expanduser("~/nhm_bind")
+            os.makedirs(self.bind_path, exist_ok=True)
+
+            # Define the volume binding with the user-defined bind path
+            self.volume_binding = {self.bind_path: {"bind": "/nhm", "mode": "rw"}}
+
         except docker.errors.DockerException as e:
             print(f"Failed to initialize Docker client: {e}")
-            # Handle the failure as appropriate for your application
-            # For example, you might want to raise the exception to halt execution
-            # or set self.client to None and check before use in other methods.
             self.client = None
         except Exception as e:
-            # Catch-all for any other exception, which might not be related to Docker directly
             print(f"An unexpected error occurred: {e}")
             self.client = None
 
@@ -204,6 +209,7 @@ class DockerManager:
             logs = self.client.containers.run(
                 image=image,
                 name=container_name,
+                user='nhm',
                 command=command,
                 volumes=self.volume_binding,
                 environment=["TERM=dumb"],
@@ -251,6 +257,7 @@ class DockerManager:
                 image=image,
                 name=container_name,
                 command=f"sh -c '{download_commands}'",
+                user='nhm',
                 volumes=self.volume_binding,
                 working_dir=working_dir,
                 environment=["TERM=dumb"],
@@ -287,7 +294,7 @@ class DockerManager:
         if not self.check_data_exists(
             image="nhmusgs/base",
             container_name="base",
-            volume="nhm_nhm",
+            volume=self.volume_binding,
             check_path="/nhm/gridmetetl/nhm_hru_data_gfv11",
         ):
             logger.info("HRU data not found. Proceeding with download.")
@@ -354,7 +361,7 @@ class DockerManager:
         if not self.check_data_exists(
             image="nhmusgs/base",
             container_name="base",
-            volume="nhm_nhm",
+            volume=self.volume_binding,
             check_path="/nhm/NHM_PRMS_CONUS_GF_1_1",
         ):
             logger.info("Model data not found. Proceeding with download.")
@@ -413,7 +420,7 @@ class DockerManager:
         if not self.check_data_exists(
             image="nhmusgs/base",
             container_name="base",
-            volume="nhm_nhm",
+            volume=self.volume_binding,
             check_path="/nhm/NHM_PRMS_UC_GF_1_1",
         ):
             logger.info("Model test data not found. Proceeding with download.")
@@ -483,6 +490,7 @@ class DockerManager:
                 image="nhmusgs/base",
                 command=command,
                 volumes=self.volume_binding,
+                user='nhm',
                 working_dir=f"{project_root}/daily/restart" if mode == "op" else f"{project_root}/forecast/restart",
                 environment={"TERM": "dumb"},
                 detach=False,
@@ -532,6 +540,7 @@ class DockerManager:
             logs = self.client.containers.run(
                 image=image,
                 name=container_name,
+                user='nhm',
                 environment=env_vars,
                 volumes=self.volume_binding,
                 detach=False,
@@ -623,6 +632,7 @@ class DockerManager:
         logs = self.client.containers.run(
             image="nhmusgs/base",
             command=command,
+            user='nhm',
             volumes=self.volume_binding,
             # environment={"TERM": "dumb"},
             detach=False,
@@ -970,12 +980,13 @@ class DockerManager:
                 logger.error(f"Error building Docker image: {build_error}")
                 return
 
-        # Create a container with a volume attached
-        container = client.containers.create(
-            name="volume_mounter",
-            image="nhmusgs/volume-mounter",
-            volumes={"nhm_nhm": {"bind": "/nhm", "mode": "rw"}},
-        )
+        # # Create a container with a volume attached
+        # container = client.containers.create(
+        #     name="volume_mounter",
+        #     image="nhmusgs/volume-mounter",
+        #     volumes=self.volume_binding,
+        #     # volumes={"nhm_nhm": {"bind": "/nhm", "mode": "rw"}},
+        # )
 
         # Define the paths to copy
         paths_to_copy = [
@@ -988,6 +999,14 @@ class DockerManager:
         ]
 
         try:
+            # Start the container in detached mode to keep it running
+            container = client.containers.run(
+                "nhmusgs/volume-mounter",
+                name="volume_mounter",
+                volumes=self.volume_binding,
+                detach=True,
+                command="sleep infinity"  # Keeps the container running until removed explicitly
+            )
             for src_path, dest_dir in paths_to_copy:
                 # Ensure the destination directory exists
                 subprocess.run(["mkdir", "-p", dest_dir], check=True)
@@ -995,12 +1014,19 @@ class DockerManager:
                 subprocess.run(
                     ["docker", "cp", f"volume_mounter:{src_path}", dest_dir], check=True
                 )
-            logger.info("Directories copied successfully.")
+                # Skip removal if "restart" is in the src_path
+                if "restart" in src_path:
+                    logger.info(f"Skipping removal for path '{src_path}'.")
+                    continue
+                # Delete only the files within src_path, preserving the directory itself
+                container.exec_run(f"sh -c 'rm -rf {src_path}/*'")
+            logger.info("Directories copied and cleaned up successfully.")
         except subprocess.CalledProcessError as e:
             logger.error(f"Error copying directories: {e}")
         finally:
             # Cleanup
             try:
+                container.stop()
                 container.remove()
                 logger.info("Container 'volume_mounter' removed successfully.")
             except docker.errors.NotFound:
